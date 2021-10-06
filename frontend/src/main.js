@@ -1,5 +1,13 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
+import {OktaAuth} from '@okta/okta-auth-js'
+import config from '@/config'
+import OktaVue from '@okta/okta-vue'
 
-createApp(App).use(router).mount('#app')
+const oktaAuth = new OktaAuth(config.oidc)
+
+createApp(App)
+    .use(router)
+    .use(OktaVue, {oktaAuth})
+    .mount('#app')
