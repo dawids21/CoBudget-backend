@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.security;
+package xyz.stasiak.cobudget.config.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
