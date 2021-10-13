@@ -17,6 +17,7 @@ class OktaOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 .anyRequest().authenticated()
                 .and()
                 .cors().disable() //TODO add cors
+                .csrf().disable() //TODO add csrf
                 .oauth2ResourceServer().jwt();
     }
 
