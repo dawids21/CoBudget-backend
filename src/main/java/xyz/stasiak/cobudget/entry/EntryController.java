@@ -19,7 +19,7 @@ class EntryController {
     }
 
     @GetMapping
-    Set<Entry> getEntriesByDate(@RequestParam String from, @RequestParam String to) {
+    Set<EntryReadModel> getEntriesByDate(@RequestParam String from, @RequestParam String to) {
         return entryRepository.findByDateBetween(LocalDate.parse(from), LocalDate.parse(to));
     }
 }
