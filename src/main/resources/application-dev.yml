@@ -4,3 +4,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: password
+
+logging:
+  level:
+    org.springframework.jdbc.core: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
