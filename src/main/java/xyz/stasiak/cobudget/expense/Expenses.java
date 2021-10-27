@@ -10,6 +10,8 @@ import java.util.Set;
 @RepositoryRestResource
 interface Expenses extends Repository<Expense, Long> {
 
-    @Query("select * from expense where date >= #start and date <= #end")
+    Expense save(Expense expense);
+
+    @Query("select * from expense where date >= :start and date <= :end")
     Set<Expense> findByDateBetween(LocalDate start, LocalDate end);
 }
