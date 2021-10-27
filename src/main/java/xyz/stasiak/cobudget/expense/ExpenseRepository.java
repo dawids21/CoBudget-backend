@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @RepositoryRestResource
-interface Expenses extends Repository<Expense, Long> {
+interface ExpenseRepository extends Repository<Expense, Long> {
 
     Expense save(Expense expense);
 
