@@ -14,8 +14,8 @@ class EntryController {
     private final EntryRepository entryRepository;
 
     @PostMapping
-    Entry add(@RequestBody Entry entry) {
-        return entryRepository.save(entry);
+    Entry add(@RequestBody EntryWriteModel dto) {
+        return entryRepository.save(Entry.of(dto));
     }
 
     @GetMapping

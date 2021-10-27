@@ -18,4 +18,8 @@ record Entry(
         String subcategory
 ) {
 
+    static Entry of(EntryWriteModel dto) {
+        return new Entry(null, dto.amount(), dto.date(), new CategoryId(dto.categoryId()), dto.subcategory());
+    }
+
 }
