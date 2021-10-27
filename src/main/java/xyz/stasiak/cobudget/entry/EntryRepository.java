@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.expense;
+package xyz.stasiak.cobudget.entry;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @RepositoryRestResource
-interface ExpenseRepository extends Repository<Expense, Long> {
+interface EntryRepository extends Repository<Entry, Long> {
 
-    Expense save(Expense expense);
+    Entry save(Entry expense);
 
     @Query("select * from expense where date >= :start and date <= :end")
-    Set<Expense> findByDateBetween(LocalDate start, LocalDate end);
+    Set<Entry> findByDateBetween(LocalDate start, LocalDate end);
 }
