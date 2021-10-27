@@ -12,7 +12,7 @@ record Entry(
         int amount,
         LocalDate date,
 
-        @Embedded.Nullable
+        @Embedded.Nullable(prefix = "category_")
         CategoryId category,
 
         String subcategory
