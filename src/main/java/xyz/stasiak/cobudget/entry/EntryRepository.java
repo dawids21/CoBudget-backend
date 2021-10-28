@@ -14,7 +14,7 @@ interface EntryRepository extends Repository<Entry, Long> {
     @Query("""
             select entry.id, amount, date, category.name as category, subcategory
             from entry
-            inner join category on category.id = entry.category_id
+            left join category on category.id = entry.category_id
             where date >= :start and date <= :end
             """)
     Set<EntryReadModel> findByDateBetween(LocalDate start, LocalDate end);
