@@ -1,3 +1,12 @@
 okta:
   oauth2:
     issuer: ${ISSUER}
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+security:
+  cors:
+    origins: ${CORS_ORIGINS}
