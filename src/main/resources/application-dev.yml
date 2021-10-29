@@ -14,3 +14,6 @@ management:
       exposure:
         include: "*"
 
+security:
+  cors:
+    origins: "http://localhost:8081"

@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "security.cors.origins",
+      "type": "java.lang.String[]",
+      "description": "CORS policy - allowed origins."
+    }
+  ]
+}
