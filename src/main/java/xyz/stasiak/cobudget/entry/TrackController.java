@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
+@CrossOrigin(origins = "${security.cors.origins}")
 class TrackController {
 
     private final EntryRepository entryRepository;
