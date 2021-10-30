@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -16,4 +19,4 @@ management:
 
 security:
   cors:
-    origins: "http://localhost:8081"
+    origins: "http://localhost:8080"

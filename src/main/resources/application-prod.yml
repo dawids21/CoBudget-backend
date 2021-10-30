@@ -1,6 +1,9 @@
+server:
+  port: ${APP_PORT}
+
 okta:
   oauth2:
-    issuer: ${ISSUER}
+    issuer: ${OAUTH_ISSUER}
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
