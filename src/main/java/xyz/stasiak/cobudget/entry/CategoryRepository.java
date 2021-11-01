@@ -1,6 +1,6 @@
 package xyz.stasiak.cobudget.entry;
 
-import io.vavr.control.Option;
+import io.vavr.collection.Set;
 import org.springframework.data.repository.Repository;
 
 @org.springframework.stereotype.Repository
@@ -8,6 +8,6 @@ interface CategoryRepository extends Repository<Category, Long> {
 
     Category save(Category category);
 
-    Option<Category> findById(Long id);
+    Set<Category> findAll();
 
 }
