@@ -2,8 +2,6 @@ package xyz.stasiak.cobudget.entry;
 
 import io.vavr.collection.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -33,11 +31,9 @@ class TrackController {
         return categoryRepository.save(category);
     }
 
-    @GetMapping("/category/{id}")
-    ResponseEntity<Category> getCategory(@PathVariable long id) {
+    @GetMapping("/category")
+    Set<Category> getCategories() {
         return categoryRepository
-                .findById(id)
-                .map(ResponseEntity::ok)
-                .getOrElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .findAll();
     }
 }
