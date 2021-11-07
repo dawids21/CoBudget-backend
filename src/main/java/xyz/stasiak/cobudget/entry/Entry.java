@@ -8,6 +8,7 @@ import java.time.LocalDate;
 record Entry(
         @Id
         Long id,
+        String userId,
 
         int amount,
         LocalDate date,
@@ -18,8 +19,8 @@ record Entry(
         String subcategory
 ) {
 
-    static Entry of(EntryWriteModel dto) {
-        return new Entry(null, dto.amount(), dto.date(), new CategoryId(dto.categoryId()), dto.subcategory());
+    static Entry of(EntryWriteModel dto, String userId) {
+        return new Entry(null, userId, dto.amount(), dto.date(), new CategoryId(dto.categoryId()), dto.subcategory());
     }
 
 }

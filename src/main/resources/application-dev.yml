@@ -20,3 +20,6 @@ management:
 security:
   cors:
     origins: "http://localhost:8080"
+okta:
+  oauth2:
+    issuer: "https://dev-01647397.okta.com/oauth2/default"
