@@ -4,12 +4,14 @@ server:
 okta:
   oauth2:
     issuer: ${OAUTH_ISSUER}
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+
 security:
   cors:
     origins: ${CORS_ORIGINS}
