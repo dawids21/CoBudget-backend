@@ -46,7 +46,7 @@ class TrackController {
     }
 
     @GetMapping("/category")
-    Set<Category> getCategories() {
+    Set<CategoryReadModel> getCategories() {
         return categoryRepository
                 .findAll();
     }

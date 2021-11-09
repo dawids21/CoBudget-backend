@@ -8,6 +8,6 @@ interface CategoryRepository extends Repository<Category, Long> {
 
     Category save(Category category);
 
-    Set<Category> findAll();
+    Set<CategoryReadModel> findAll();
 
 }
