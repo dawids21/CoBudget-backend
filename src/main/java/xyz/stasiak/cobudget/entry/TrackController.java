@@ -41,8 +41,12 @@ class TrackController {
 
 
     @PostMapping("/category")
-    Category addCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+    ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
+        return getUserId(jwt)
+                .map(userId -> Category.of(dto, userId))
+                .map(categoryRepository::save)
+                .map(ResponseEntity::ok)
+                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
     }
 
     @GetMapping("/category")
