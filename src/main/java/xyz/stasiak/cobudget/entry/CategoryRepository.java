@@ -9,7 +9,7 @@ interface CategoryRepository extends Repository<Category, Long> {
 
     Category save(Category category);
 
-    @Query("select name from category where user_id = :userId")
+    @Query("select id, name from category where user_id = :userId")
     Set<CategoryReadModel> findAll(String userId);
 
 }
