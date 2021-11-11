@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
     volumes:
-      - postgres-cobudget:/data/postgres
+      - postgres-cobudget:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
