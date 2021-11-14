@@ -17,13 +17,11 @@ record Entry(
         LocalDate date,
 
         @Embedded.Nullable(prefix = "category_")
-        CategoryId category,
-
-        String subcategory
+        CategoryId category
 ) {
 
     static Entry of(EntryWriteModel dto, String userId) {
-        return new Entry(null, userId, dto.amount(), dto.date(), new CategoryId(dto.categoryId()), dto.subcategory());
+        return new Entry(null, userId, dto.amount(), dto.date(), new CategoryId(dto.categoryId()));
     }
 
 }

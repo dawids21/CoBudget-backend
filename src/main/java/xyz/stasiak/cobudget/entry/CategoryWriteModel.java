@@ -1,5 +1,5 @@
 package xyz.stasiak.cobudget.entry;
 
-record CategoryWriteModel(String name) {
+record CategoryWriteModel(Long parentId, String name) {
 
 }
