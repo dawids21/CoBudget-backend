@@ -57,6 +57,14 @@ class TrackController {
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
     }
 
+    @GetMapping("/category/{categoryId}/subcategory")
+    ResponseEntity<Set<CategoryReadModel>> getSubcategories(@PathVariable long categoryId, @AuthenticationPrincipal Jwt jwt) {
+        return getUserId(jwt)
+                .map(userId -> categoryRepository.findSubcategories(userId, categoryId))
+                .map(ResponseEntity::ok)
+                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+    }
+
     private Option<String> getUserId(Jwt jwt) {
         return Option.of(jwt.getClaim("uid"));
     }
