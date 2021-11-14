@@ -52,7 +52,7 @@ class TrackController {
     @GetMapping("/category")
     ResponseEntity<Set<CategoryReadModel>> getCategories(@AuthenticationPrincipal Jwt jwt) {
         return getUserId(jwt)
-                .map(categoryRepository::findAll)
+                .map(categoryRepository::findCategories)
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
     }
