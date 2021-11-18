@@ -19,12 +19,4 @@ interface CategoryRepository extends Repository<Category, Long> {
     @Query("select id, parent_id, name from category where parent_id = :parentId and user_id = :userId")
     List<CategoryReadModel> findSubcategories(String userId, Long parentId);
 
-    @Query("""
-            select category.id as category_id, category.name as category, subcategory.id as subcategory_id, subcategory.name as subcategory
-            from category
-            left join category subcategory on subcategory.parent_id = category.id
-            where category.user_id = :userId
-            """)
-    List<CategorySubcategoryProjection> findAllCategories(String userId);
-
 }
