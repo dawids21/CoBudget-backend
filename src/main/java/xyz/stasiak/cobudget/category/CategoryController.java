@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import xyz.stasiak.cobudget.category.dto.CategoryReadModel;
+import xyz.stasiak.cobudget.category.dto.CategorySubcategoryReadModel;
+import xyz.stasiak.cobudget.category.dto.CategoryWriteModel;
 import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.common.UserIdNotFound;
 
@@ -44,14 +47,14 @@ class CategoryController {
     }
 
     @GetMapping("/category/all")
-    ResponseEntity<Seq<CategoryWithSubcategoriesReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<Seq<CategorySubcategoryReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
 
         UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
         var map = categoryRepository.findAllCategories(userId.id())
-                .groupBy(CategorySubcategoryReadModel::categoryId)
+                .groupBy(CategorySubcategoryProjection::categoryId)
                 .values()
-                .map(category -> new CategoryWithSubcategoriesReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
+                .map(category -> new CategorySubcategoryReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
 
         return ResponseEntity.ok(map);
     }

@@ -4,6 +4,7 @@ import io.vavr.collection.List;
 import io.vavr.collection.Set;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
+import xyz.stasiak.cobudget.category.dto.CategoryReadModel;
 
 @org.springframework.stereotype.Repository
 interface CategoryRepository extends Repository<Category, Long> {
@@ -22,6 +23,6 @@ interface CategoryRepository extends Repository<Category, Long> {
             inner join category subcategory on subcategory.parent_id = category.id
             where category.user_id = :userId
             """)
-    List<CategorySubcategoryReadModel> findAllCategories(String userId);
+    List<CategorySubcategoryProjection> findAllCategories(String userId);
 
 }
