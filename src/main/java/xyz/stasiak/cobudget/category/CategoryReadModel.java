@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.entry;
+package xyz.stasiak.cobudget.category;
 
 record CategoryReadModel(long id, Long parentId, String name) {
 }

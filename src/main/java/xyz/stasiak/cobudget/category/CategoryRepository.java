@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.entry;
+package xyz.stasiak.cobudget.category;
 
 import io.vavr.collection.List;
 import io.vavr.collection.Set;

@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.entry;
+package xyz.stasiak.cobudget.category;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
