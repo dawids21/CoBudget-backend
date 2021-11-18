@@ -1,7 +1,6 @@
 package xyz.stasiak.cobudget.category;
 
-import io.vavr.collection.Seq;
-import io.vavr.collection.Set;
+import io.vavr.collection.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,7 +31,7 @@ class CategoryController {
     }
 
     @GetMapping
-    ResponseEntity<Set<CategoryReadModel>> getCategories(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<List<CategoryReadModel>> getCategories(@AuthenticationPrincipal Jwt jwt) {
 
         var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
@@ -40,7 +39,7 @@ class CategoryController {
     }
 
     @GetMapping("/{categoryId}/subcategory")
-    ResponseEntity<Set<CategoryReadModel>> getSubcategories(@PathVariable long categoryId, @AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<List<CategoryReadModel>> getSubcategories(@PathVariable long categoryId, @AuthenticationPrincipal Jwt jwt) {
 
         var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
@@ -48,14 +47,13 @@ class CategoryController {
     }
 
     @GetMapping("/all")
-    ResponseEntity<Seq<CategorySubcategoryReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<List<CategorySubcategoryReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
 
         var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
-        var categories = categoryRepository.findAllCategories(userId.id())
-                .groupBy(CategorySubcategoryProjection::categoryId)
-                .values()
-                .map(CategorySubcategoryProjection::toCategorySubcategoryReadModel);
+        var subcategories = categoryRepository.findSubcategories(userId.id()).groupBy(CategoryReadModel::parentId);
+        var categories = categoryRepository.findCategories(userId.id())
+                .map(category -> new CategorySubcategoryReadModel(category.id(), category.name(), subcategories.getOrElse(category.id(), List.empty())));
 
         return ResponseEntity.ok(categories);
     }
