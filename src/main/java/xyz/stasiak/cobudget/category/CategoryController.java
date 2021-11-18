@@ -51,11 +51,11 @@ class CategoryController {
 
         UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
-        var map = categoryRepository.findAllCategories(userId.id())
+        var categories = categoryRepository.findAllCategories(userId.id())
                 .groupBy(CategorySubcategoryProjection::categoryId)
                 .values()
-                .map(category -> new CategorySubcategoryReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
+                .map(CategorySubcategoryProjection::toCategorySubcategoryReadModel);
 
-        return ResponseEntity.ok(map);
+        return ResponseEntity.ok(categories);
     }
 }
