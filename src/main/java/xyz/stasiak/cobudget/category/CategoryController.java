@@ -21,35 +21,36 @@ class CategoryController {
 
     private final CategoryRepository categoryRepository;
 
-    @PostMapping("/category")
+    @PostMapping
     ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
-        return UserId.get(jwt)
-                .map(userId -> Category.of(dto, userId.id()))
-                .map(categoryRepository::save)
-                .map(ResponseEntity::ok)
-                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var category = Category.of(dto, userId.id());
+
+        return ResponseEntity.ok(categoryRepository.save(category));
     }
 
-    @GetMapping("/category")
+    @GetMapping
     ResponseEntity<Set<CategoryReadModel>> getCategories(@AuthenticationPrincipal Jwt jwt) {
-        return UserId.get(jwt)
-                .map(userId -> categoryRepository.findCategories(userId.id()))
-                .map(ResponseEntity::ok)
-                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        return ResponseEntity.ok(categoryRepository.findCategories(userId.id()));
     }
 
-    @GetMapping("/category/{categoryId}/subcategory")
+    @GetMapping("/{categoryId}/subcategory")
     ResponseEntity<Set<CategoryReadModel>> getSubcategories(@PathVariable long categoryId, @AuthenticationPrincipal Jwt jwt) {
-        return UserId.get(jwt)
-                .map(userId -> categoryRepository.findSubcategories(userId.id(), categoryId))
-                .map(ResponseEntity::ok)
-                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        return ResponseEntity.ok(categoryRepository.findSubcategories(userId.id(), categoryId));
     }
 
-    @GetMapping("/category/all")
+    @GetMapping("/all")
     ResponseEntity<Seq<CategorySubcategoryReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
 
-        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
         var categories = categoryRepository.findAllCategories(userId.id())
                 .groupBy(CategorySubcategoryProjection::categoryId)
