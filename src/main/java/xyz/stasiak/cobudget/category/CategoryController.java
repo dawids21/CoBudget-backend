@@ -2,13 +2,13 @@ package xyz.stasiak.cobudget.category;
 
 import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
-import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.common.UserIdNotFound;
 
 @RequiredArgsConstructor
@@ -22,8 +22,8 @@ class CategoryController {
 
     @PostMapping("/category")
     ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
-        return getUserId(jwt)
-                .map(userId -> Category.of(dto, userId))
+        return UserId.get(jwt)
+                .map(userId -> Category.of(dto, userId.id()))
                 .map(categoryRepository::save)
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
@@ -31,16 +31,16 @@ class CategoryController {
 
     @GetMapping("/category")
     ResponseEntity<Set<CategoryReadModel>> getCategories(@AuthenticationPrincipal Jwt jwt) {
-        return getUserId(jwt)
-                .map(categoryRepository::findCategories)
+        return UserId.get(jwt)
+                .map(userId -> categoryRepository.findCategories(userId.id()))
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
     }
 
     @GetMapping("/category/{categoryId}/subcategory")
     ResponseEntity<Set<CategoryReadModel>> getSubcategories(@PathVariable long categoryId, @AuthenticationPrincipal Jwt jwt) {
-        return getUserId(jwt)
-                .map(userId -> categoryRepository.findSubcategories(userId, categoryId))
+        return UserId.get(jwt)
+                .map(userId -> categoryRepository.findSubcategories(userId.id(), categoryId))
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
     }
@@ -48,18 +48,14 @@ class CategoryController {
     @GetMapping("/category/all")
     ResponseEntity<Seq<CategoryWithSubcategoriesReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
 
-        String userId = getUserId(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
 
-        var map = categoryRepository.findAllCategories(userId)
+        var map = categoryRepository.findAllCategories(userId.id())
                 .groupBy(CategorySubcategoryReadModel::categoryId)
                 .values()
                 .map(category -> new CategoryWithSubcategoriesReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
 
         return ResponseEntity.ok(map);
-    }
-
-    private Option<String> getUserId(Jwt jwt) {
-        return Option.of(jwt.getClaim("uid"));
     }
 
     @ExceptionHandler(UserIdNotFound.class)
