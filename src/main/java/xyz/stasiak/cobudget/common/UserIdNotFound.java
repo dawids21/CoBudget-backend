@@ -1,6 +1,6 @@
-package xyz.stasiak.cobudget.entry;
+package xyz.stasiak.cobudget.common;
 
-class UserIdNotFound extends RuntimeException {
+public class UserIdNotFound extends RuntimeException {
 
     private final String subject;
 
