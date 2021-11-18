@@ -2,7 +2,6 @@ package xyz.stasiak.cobudget.entry;
 
 import io.vavr.collection.Set;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,7 +15,6 @@ import java.time.LocalDate;
 @RequestMapping("/api/entry")
 @RestController
 @CrossOrigin(origins = "${security.cors.origins}")
-@Slf4j
 class TrackController {
 
     private final EntryRepository entryRepository;
@@ -37,11 +35,5 @@ class TrackController {
                 .map(userId -> entryRepository.findByDateBetween(LocalDate.parse(from), LocalDate.parse(to), userId.id()))
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
-    }
-
-    @ExceptionHandler(UserIdNotFound.class)
-    private ResponseEntity<?> handleNoUserId(UserIdNotFound exception) {
-        log.error("User id was not in jwt token for subject: {}", exception.getSubject());
-        return ResponseEntity.badRequest().build();
     }
 }

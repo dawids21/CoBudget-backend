@@ -3,7 +3,6 @@ package xyz.stasiak.cobudget.category;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -15,7 +14,6 @@ import xyz.stasiak.cobudget.common.UserIdNotFound;
 @RequestMapping("/api/category")
 @RestController
 @CrossOrigin(origins = "${security.cors.origins}")
-@Slf4j
 class CategoryController {
 
     private final CategoryRepository categoryRepository;
@@ -56,11 +54,5 @@ class CategoryController {
                 .map(category -> new CategoryWithSubcategoriesReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
 
         return ResponseEntity.ok(map);
-    }
-
-    @ExceptionHandler(UserIdNotFound.class)
-    private ResponseEntity<?> handleNoUserId(UserIdNotFound exception) {
-        log.error("User id was not in jwt token for subject: {}", exception.getSubject());
-        return ResponseEntity.badRequest().build();
     }
 }
