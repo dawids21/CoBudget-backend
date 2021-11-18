@@ -1,5 +1,6 @@
 package xyz.stasiak.cobudget.entry;
 
+import io.vavr.collection.Seq;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,19 @@ class TrackController {
                 .map(userId -> categoryRepository.findSubcategories(userId, categoryId))
                 .map(ResponseEntity::ok)
                 .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+    }
+
+    @GetMapping("/category/all")
+    ResponseEntity<Seq<CategoryWithSubcategoriesReadModel>> getAllCategories(@AuthenticationPrincipal Jwt jwt) {
+
+        String userId = getUserId(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var map = categoryRepository.findAllCategories(userId)
+                .groupBy(CategorySubcategoryReadModel::categoryId)
+                .values()
+                .map(category -> new CategoryWithSubcategoriesReadModel(category.get().categoryId(), category.map(subcategory -> new CategoryReadModel(subcategory.subcategoryId(), subcategory.categoryId(), subcategory.subcategory()))));
+
+        return ResponseEntity.ok(map);
     }
 
     private Option<String> getUserId(Jwt jwt) {
