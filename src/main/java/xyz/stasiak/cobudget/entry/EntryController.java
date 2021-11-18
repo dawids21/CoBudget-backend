@@ -15,25 +15,27 @@ import java.time.LocalDate;
 @RequestMapping("/api/entry")
 @RestController
 @CrossOrigin(origins = "${security.cors.origins}")
-class TrackController {
+class EntryController {
 
     private final EntryRepository entryRepository;
 
     @PostMapping
     ResponseEntity<Entry> addEntry(@RequestBody EntryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
 
-        return UserId.get(jwt)
-                .map(userId -> Entry.of(dto, userId.id()))
-                .map(entryRepository::save)
-                .map(ResponseEntity::ok)
-                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var entry = Entry.of(dto, userId.id());
+
+        return ResponseEntity.ok(entryRepository.save(entry));
     }
 
     @GetMapping
     ResponseEntity<Set<EntryReadModel>> getEntriesByDate(@RequestParam String from, @RequestParam String to, @AuthenticationPrincipal Jwt jwt) {
-        return UserId.get(jwt)
-                .map(userId -> entryRepository.findByDateBetween(LocalDate.parse(from), LocalDate.parse(to), userId.id()))
-                .map(ResponseEntity::ok)
-                .getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+
+        var entries = entryRepository.findByDateBetween(LocalDate.parse(from), LocalDate.parse(to), userId.id());
+
+        return ResponseEntity.ok(entries);
     }
 }
