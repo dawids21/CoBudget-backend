@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.category.dto;
+package xyz.stasiak.cobudget.category.query;
 
 import io.vavr.collection.List;
 import org.springframework.data.jdbc.repository.query.Query;
