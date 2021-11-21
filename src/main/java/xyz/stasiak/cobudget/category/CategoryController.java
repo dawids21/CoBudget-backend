@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import xyz.stasiak.cobudget.category.dto.CategoryReadModel;
 import xyz.stasiak.cobudget.category.dto.CategorySubcategoryReadModel;
-import xyz.stasiak.cobudget.category.dto.CategoryWriteModel;
 import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.common.UserIdNotFound;
 
