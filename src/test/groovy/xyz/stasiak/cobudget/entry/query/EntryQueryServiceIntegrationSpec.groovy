@@ -1,26 +1,15 @@
 package xyz.stasiak.cobudget.entry.query
 
-
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.context.ActiveProfiles
-import spock.lang.Specification
+import xyz.stasiak.cobudget.DataIntegrationSpec
 import xyz.stasiak.cobudget.common.UserId
 
 import java.time.LocalDate
 
-@DataJdbcTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
-class EntryQueryServiceIntegrationSpec extends Specification {
+class EntryQueryServiceIntegrationSpec extends DataIntegrationSpec {
 
     @Autowired
     EntryQueryRepository queryRepository
-
-    @Autowired
-    JdbcTemplate jdbcTemplate
 
     private EntryQueryService queryService
 
