@@ -17,16 +17,16 @@ import java.time.LocalDate;
 @CrossOrigin(origins = "${security.cors.origins}")
 class EntryQueryController {
 
-    private final EntryQueryRepository repository;
+    private final EntryQueryService queryService;
 
     @GetMapping
     ResponseEntity<Set<EntryReadModel>> getEntriesByDate(@RequestParam String from, @RequestParam String to, @AuthenticationPrincipal Jwt jwt) {
 
         var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        var fromDate = LocalDate.parse(from);
+        var toDate = LocalDate.parse(to);
 
-        var entries = repository.findByDateBetween(LocalDate.parse(from), LocalDate.parse(to), userId.id());
-
-        return ResponseEntity.ok(entries);
+        return ResponseEntity.ok(queryService.getByDate(fromDate, toDate, userId));
     }
 
 }
