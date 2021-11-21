@@ -8,10 +8,10 @@ import spock.lang.Specification
 
 @SuppressWarnings('SpringJavaAutowiredMembersInspection')
 @ActiveProfiles("test")
-class WebIntegrationSpec extends Specification {
+abstract class WebIntegrationSpec extends Specification {
 
     @Autowired
-    MockMvc mvc
+    protected MockMvc mvc
 
     protected static def getJwt(String userId) {
         SecurityMockMvcRequestPostProcessors.jwt().jwt(token -> token.claim("uid", userId))
