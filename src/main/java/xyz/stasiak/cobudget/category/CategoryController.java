@@ -14,7 +14,7 @@ import xyz.stasiak.cobudget.common.UserIdNotFound;
 @CrossOrigin(origins = "${security.cors.origins}")
 class CategoryController {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryApplicationService categoryApplicationService;
 
     @PostMapping
     ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
@@ -23,7 +23,7 @@ class CategoryController {
 
         var category = Category.of(dto, userId.id());
 
-        return ResponseEntity.ok(categoryRepository.save(category));
+        return ResponseEntity.ok(categoryApplicationService.add(category));
     }
 
 }
