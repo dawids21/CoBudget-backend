@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.entry;
+package xyz.stasiak.cobudget.entry.query;
 
 import java.time.LocalDate;
 
