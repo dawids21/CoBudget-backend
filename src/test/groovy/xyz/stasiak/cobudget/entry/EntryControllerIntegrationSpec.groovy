@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.security.oauth2.jwt.JwtDecoder
 import spock.mock.DetachedMockFactory
 import xyz.stasiak.cobudget.WebIntegrationSpec
 
@@ -15,6 +15,7 @@ import java.time.LocalDate
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
 @WebMvcTest(EntryController)
+@Import(WebIntegrationMockConfig)
 class EntryControllerIntegrationSpec extends WebIntegrationSpec {
 
     @Autowired
@@ -22,8 +23,14 @@ class EntryControllerIntegrationSpec extends WebIntegrationSpec {
 
     def "post saves entry in repository"() {
         when:
-        def result = mvc.perform(post("/api/entry").with(getJwt("userId")).contentType(MediaType.APPLICATION_JSON).content(entryJson()))
-                .andReturn().response
+        def result = mvc.perform(
+                post("/api/entry")
+                        .with(getJwt("userId"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(entryJson())
+        )
+                .andReturn()
+                .response
 
         then:
         result.status == HttpStatus.OK.value()
@@ -53,11 +60,6 @@ class EntryControllerIntegrationSpec extends WebIntegrationSpec {
         @Bean
         EntryRepository entryRepository() {
             detachedMockFactory.Mock(EntryRepository)
-        }
-
-        @Bean
-        JwtDecoder jwtDecoder() {
-            detachedMockFactory.Mock(JwtDecoder)
         }
     }
 }

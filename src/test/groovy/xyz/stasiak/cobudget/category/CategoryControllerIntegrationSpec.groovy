@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.security.oauth2.jwt.JwtDecoder
 import spock.mock.DetachedMockFactory
 import xyz.stasiak.cobudget.WebIntegrationSpec
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
 @WebMvcTest(CategoryController)
+@Import(WebIntegrationMockConfig)
 class CategoryControllerIntegrationSpec extends WebIntegrationSpec {
 
     @Autowired
@@ -58,11 +59,6 @@ class CategoryControllerIntegrationSpec extends WebIntegrationSpec {
         @Bean
         CategoryApplicationService categoryApplicationService() {
             detachedMockFactory.Mock(CategoryApplicationService)
-        }
-
-        @Bean
-        JwtDecoder jwtDecoder() {
-            detachedMockFactory.Mock(JwtDecoder)
         }
     }
 }
