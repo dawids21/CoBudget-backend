@@ -1,0 +1,407 @@
+{
+  "id" : 0,
+  "name" : "CoBudget",
+  "description" : "Model systemu",
+  "configuration" : { },
+  "model" : {
+    "enterprise" : {
+      "name" : "CoBudget"
+    },
+    "people" : [ {
+      "id" : "1",
+      "tags" : "Element,Person",
+      "name" : "Użytkownik",
+      "description" : "Użytkownik systemu, tworzy i planuje budżet domowy",
+      "relationships" : [ {
+        "id" : "4",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "2",
+        "description" : "Używa"
+      }, {
+        "id" : "5",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "3",
+        "description" : "Używa",
+        "technology" : "JSON/HTTPS"
+      }, {
+        "id" : "10",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "7",
+        "description" : "Używa",
+        "technology" : "Przeglądarka internetowa"
+      } ],
+      "location" : "External"
+    } ],
+    "softwareSystems" : [ {
+      "id" : "2",
+      "tags" : "Element,Software System",
+      "name" : "Planowanie budżetu online",
+      "description" : "Pozwala na zarządzanie swoim budżetem",
+      "relationships" : [ {
+        "id" : "6",
+        "tags" : "Relationship",
+        "sourceId" : "2",
+        "destinationId" : "3",
+        "description" : "Autoryzuje użytkownika",
+        "technology" : "OAuth2/OpenID Connect"
+      } ],
+      "location" : "Internal",
+      "containers" : [ {
+        "id" : "8",
+        "tags" : "Element,Container",
+        "name" : "API",
+        "description" : "Umożliwia zarządzanie budżetem poprzez JSON/HTTPS API.",
+        "relationships" : [ {
+          "id" : "13",
+          "tags" : "Relationship",
+          "sourceId" : "8",
+          "destinationId" : "9",
+          "description" : "Czyta/Zapisuje",
+          "technology" : "JDBC"
+        }, {
+          "id" : "14",
+          "tags" : "Relationship",
+          "sourceId" : "8",
+          "destinationId" : "3",
+          "description" : "Autoryzuje",
+          "technology" : "OAuth2/OpenID Connect"
+        } ],
+        "technology" : "Java, Spring",
+        "components" : [ {
+          "id" : "17",
+          "tags" : "Element,Component",
+          "name" : "Kategorie",
+          "description" : "Pozwala na zarządzanie dostępnymi kategoriami w budżecie",
+          "relationships" : [ {
+            "id" : "26",
+            "tags" : "Relationship",
+            "sourceId" : "17",
+            "destinationId" : "9",
+            "description" : "Zapisuje",
+            "technology" : "JDBC"
+          } ],
+          "technology" : "Spring MVC Rest Controller",
+          "size" : 0
+        }, {
+          "id" : "15",
+          "tags" : "Element,Component",
+          "name" : "Wydatki",
+          "description" : "Pozwala na zarządzanie wydatkami",
+          "relationships" : [ {
+            "id" : "24",
+            "tags" : "Relationship",
+            "sourceId" : "15",
+            "destinationId" : "9",
+            "description" : "Zapisuje",
+            "technology" : "JDBC"
+          } ],
+          "technology" : "Spring MVC Rest Controller",
+          "size" : 0
+        }, {
+          "id" : "18",
+          "tags" : "Element,Component",
+          "name" : "Odczyt kategorii",
+          "description" : "Pozwala na odczyt utworzonych kategorii i podkategorii",
+          "relationships" : [ {
+            "id" : "27",
+            "tags" : "Relationship",
+            "sourceId" : "18",
+            "destinationId" : "9",
+            "description" : "Odczytuje",
+            "technology" : "JDBC"
+          } ],
+          "technology" : "Spring MVC Rest Controller",
+          "size" : 0
+        }, {
+          "id" : "19",
+          "tags" : "Element,Component",
+          "name" : "Autoryzacja",
+          "description" : "Autoryzuje użytkownika dając mu dostęp do zasobów",
+          "relationships" : [ {
+            "id" : "28",
+            "tags" : "Relationship",
+            "sourceId" : "19",
+            "destinationId" : "3",
+            "description" : "Autoryzuje",
+            "technology" : "OAuth2/OpenID Connect"
+          } ],
+          "technology" : "Okta Spring Boot Starter",
+          "size" : 0
+        }, {
+          "id" : "16",
+          "tags" : "Element,Component",
+          "name" : "Odczyt wydatków",
+          "description" : "Pozwala na odczytywanie wydatków w danym okresie",
+          "relationships" : [ {
+            "id" : "25",
+            "tags" : "Relationship",
+            "sourceId" : "16",
+            "destinationId" : "9",
+            "description" : "Odczytuje",
+            "technology" : "JDBC"
+          } ],
+          "technology" : "Spring MVC Rest Controller",
+          "size" : 0
+        } ]
+      }, {
+        "id" : "7",
+        "tags" : "Element,Container",
+        "name" : "Aplikacja webowa",
+        "description" : "Umożliwia korzystanie z systemu przez przeglądarkę internetową",
+        "relationships" : [ {
+          "id" : "11",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "8",
+          "description" : "Używa",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "id" : "12",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "3",
+          "description" : "Autoryzuje",
+          "technology" : "OAuth2/OpenID Connect"
+        }, {
+          "id" : "20",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "15",
+          "description" : "Używa",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "id" : "21",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "16",
+          "description" : "Używa",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "id" : "22",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "17",
+          "description" : "Używa",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "id" : "23",
+          "tags" : "Relationship",
+          "sourceId" : "7",
+          "destinationId" : "18",
+          "description" : "Używa",
+          "technology" : "JSON/HTTPS"
+        } ],
+        "technology" : "VueJS"
+      }, {
+        "id" : "9",
+        "tags" : "Element,Container",
+        "name" : "Baza danych",
+        "description" : "Zawiera informacje o budżetach, wydatkach oraz konfiguracji",
+        "technology" : "PostgreSQL"
+      } ]
+    }, {
+      "id" : "3",
+      "tags" : "Element,Software System",
+      "name" : "Okta",
+      "description" : "System do autentykacji i autoryzacji użytkowników",
+      "location" : "Unspecified"
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "systemContextViews" : [ {
+      "softwareSystemId" : "2",
+      "description" : "Diagram kontekstowy systemu do planowania budżetu",
+      "key" : "SystemContext",
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "animations" : [ {
+        "order" : 1,
+        "elements" : [ "1" ]
+      }, {
+        "order" : 2,
+        "elements" : [ "2" ],
+        "relationships" : [ "4" ]
+      }, {
+        "order" : 3,
+        "elements" : [ "3" ],
+        "relationships" : [ "5", "6" ]
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "4"
+      }, {
+        "id" : "5"
+      }, {
+        "id" : "6"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 385,
+        "y" : 210
+      }, {
+        "id" : "2",
+        "x" : 390,
+        "y" : 975
+      }, {
+        "id" : "3",
+        "x" : 1330,
+        "y" : 210
+      } ]
+    } ],
+    "containerViews" : [ {
+      "softwareSystemId" : "2",
+      "description" : "Diagram kontenerów systemu do planowania budżetu",
+      "key" : "Containers",
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "animations" : [ {
+        "order" : 1,
+        "elements" : [ "1", "3" ],
+        "relationships" : [ "5" ]
+      }, {
+        "order" : 2,
+        "elements" : [ "7" ],
+        "relationships" : [ "12", "10" ]
+      }, {
+        "order" : 3,
+        "elements" : [ "8" ],
+        "relationships" : [ "11", "14" ]
+      }, {
+        "order" : 4,
+        "elements" : [ "9" ],
+        "relationships" : [ "13" ]
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "relationships" : [ {
+        "id" : "14"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "5"
+      }, {
+        "id" : "11"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "10"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 1375,
+        "y" : 315
+      }, {
+        "id" : "3",
+        "x" : 1395,
+        "y" : 1085
+      }, {
+        "id" : "7",
+        "x" : 555,
+        "y" : 320
+      }, {
+        "id" : "8",
+        "x" : 560,
+        "y" : 690
+      }, {
+        "id" : "9",
+        "x" : 565,
+        "y" : 1075
+      } ]
+    } ],
+    "componentViews" : [ {
+      "description" : "Diagram komponentów aplikacji API",
+      "key" : "Components",
+      "paperSize" : "A5_Landscape",
+      "dimensions" : {
+        "width" : 2480,
+        "height" : 1748
+      },
+      "animations" : [ {
+        "order" : 1,
+        "elements" : [ "7" ]
+      }, {
+        "order" : 2,
+        "elements" : [ "15", "16", "9" ],
+        "relationships" : [ "24", "25", "20", "21" ]
+      }, {
+        "order" : 3,
+        "elements" : [ "17", "18" ],
+        "relationships" : [ "22", "23", "26", "27" ]
+      }, {
+        "order" : 4,
+        "elements" : [ "3", "19" ],
+        "relationships" : [ "12", "28" ]
+      } ],
+      "containerId" : "8",
+      "externalContainerBoundariesVisible" : false,
+      "relationships" : [ {
+        "id" : "28"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "20"
+      } ],
+      "elements" : [ {
+        "id" : "3",
+        "x" : 315,
+        "y" : 35
+      }, {
+        "id" : "15",
+        "x" : 1340,
+        "y" : 860
+      }, {
+        "id" : "16",
+        "x" : 1870,
+        "y" : 860
+      }, {
+        "id" : "17",
+        "x" : 325,
+        "y" : 860
+      }, {
+        "id" : "7",
+        "x" : 1095,
+        "y" : 20
+      }, {
+        "id" : "18",
+        "x" : 820,
+        "y" : 855
+      }, {
+        "id" : "19",
+        "x" : 320,
+        "y" : 440
+      }, {
+        "id" : "9",
+        "x" : 1090,
+        "y" : 1325
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : { },
+      "terminology" : { }
+    }
+  }
+}
