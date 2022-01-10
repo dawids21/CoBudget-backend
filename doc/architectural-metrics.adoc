@@ -1,0 +1,10 @@
+= Architectural metrics
+
+== The number of tested functionalities
+
+Type: quality
+
+- Actual: 100%
+- Limit: 60%
+- Goal: 80%
+- Wish: 95%
