@@ -1,0 +1,32 @@
+= 1. APP - decision on the form of authorization
+
+Date: 06-10-2021
+
+== Status
+
+Accepted
+
+== Context
+
+- I have an app written in Java using Spring Framework.
+- To allow users to log in we have to choose the form of security.
+- I want a solution that will be easy to use and developed by external company to avoid security breaches because I don't have much experience with security details.
+- The chosen form should allow web app to authenticate.
+
+== Decision
+
+Status: accepted
+
+I will use Okta as authorization provider and use OAuth2/OpenID Connect to secure the backend application.
+
+Date: 06-10-2021
+
+== Consequences
+
+- The data of the users will not be on my server, and I have a limit on number of users on free tier.
+- The security will be much easier to implement because of the existing libraries.
+
+== Other options
+
+- security implemented by me - require higher skills and more knowledge
+- other OAuth providers (Google, Facebook) - users need to have an account in given provider
