@@ -1,0 +1,25 @@
+= Architectural drivers
+
+== Functional Requirements
+
+- Add new expenses
+- Categorize expenses
+- Plan expenses for the future in each category
+
+== Quality Attributes
+
+- Web app should open within 5 seconds
+- Adding new expense should take less than 2 seconds
+- Web app should be responsive, usable on desktop as well as on mobile
+- Maintainability (to allow easier learning new things)
+
+== Constraints
+
+- Backend app should be hosted on free platform (Heroku)
+- Web app should be hosted on free platform (Vercel)
+- Backend app should be created using Java programming langauge and Spring Framework
+
+== Project goals
+
+- To learn new skills as a programmer
+- To put an example app in my portfolio
