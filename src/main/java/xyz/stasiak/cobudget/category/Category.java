@@ -29,4 +29,8 @@ class Category {
     boolean isMainCategory() {
         return parentId == null;
     }
+
+    boolean isSubCategory() {
+        return !isMainCategory();
+    }
 }

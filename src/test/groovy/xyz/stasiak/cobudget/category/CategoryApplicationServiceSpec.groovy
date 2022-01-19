@@ -1,11 +1,11 @@
 package xyz.stasiak.cobudget.category
 
-
 import io.vavr.collection.HashMap
 import io.vavr.collection.Set
 import io.vavr.control.Option
 import spock.lang.Specification
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound
+import xyz.stasiak.cobudget.category.exception.MainCategoryNotFound
 
 class CategoryApplicationServiceSpec extends Specification {
 
@@ -41,6 +41,67 @@ class CategoryApplicationServiceSpec extends Specification {
         repository.findById(2L).get().isDisabled()
         repository.findById(3L).get().isDisabled()
     }
+
+    def "enable disabled category when the name and parent id is the same"() {
+        given:
+        categoryApplicationService.disable(2L)
+        def categoryWriteModel = new CategoryWriteModel(parentId, name)
+
+        when:
+        categoryApplicationService.add(Category.of(categoryWriteModel, userId))
+
+        then:
+        repository.findById(2L).get().isDisabled() == isDisabled
+        repository.findById(4L).isEmpty() == isEmpty
+
+        where:
+        parentId | name   | userId       || isDisabled | isEmpty
+        1L       | "Home" | "user"       || false      | true
+        2L       | "Home" | "user"       || true       | false
+        1L       | "City" | "user"       || true       | false
+        1L       | "Home" | "other user" || true       | false
+    }
+
+    def "enable only category not its subcategories"() {
+        given:
+        categoryApplicationService.disable(1L)
+        def categoryWriteModel = new CategoryWriteModel(null, "Food")
+
+        when:
+        categoryApplicationService.add(Category.of(categoryWriteModel, "user"))
+
+        then:
+        !repository.findById(1L).get().isDisabled()
+        repository.findById(2L).get().isDisabled()
+        repository.findById(3L).get().isDisabled()
+    }
+
+    def "enable also category when enabling subcategories"() {
+        given:
+        categoryApplicationService.disable(1L)
+        def categoryWriteModel = new CategoryWriteModel(1, "Home")
+
+        when:
+        categoryApplicationService.add(Category.of(categoryWriteModel, "user"))
+
+        then:
+        !repository.findById(1L).get().isDisabled()
+        !repository.findById(2L).get().isDisabled()
+        repository.findById(3L).get().isDisabled()
+    }
+
+    def "throw exception when main category for subcategory not found when enabling"() {
+        given:
+        def categoryWriteModel = new CategoryWriteModel(6, "new sub")
+        categoryApplicationService.add(Category.of(categoryWriteModel, "user"))
+        categoryApplicationService.disable(4L)
+
+        when:
+        categoryApplicationService.add(Category.of(categoryWriteModel, "user"))
+
+        then:
+        thrown(MainCategoryNotFound)
+    }
 }
 
 class TestCategoryRepository implements CategoryRepository {
@@ -73,5 +134,13 @@ class TestCategoryRepository implements CategoryRepository {
     @Override
     Set<Category> findAllByParentId(long parentId) {
         return categories.values().filter(category -> category.getParentId() == parentId).toSet()
+    }
+
+    @Override
+    Option<Category> findByParentIdAndName(Long parentId, String name, String userId) {
+        return Option.of(categories.values()
+                .filter(category -> category.getParentId() == parentId)
+                .filter(category -> category.getUserId() == userId)
+                .find(category -> category.getName() == name) as Category)
     }
 }

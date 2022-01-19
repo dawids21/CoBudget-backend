@@ -16,4 +16,6 @@ interface CategoryRepository extends Repository<Category, Long> {
     @Query("select * from category where parent_id = :parentId")
     Set<Category> findAllByParentId(long parentId);
 
+    @Query("select * from category where parent_id = :parentId and name = :name and user_id = :userId")
+    Option<Category> findByParentIdAndName(Long parentId, String name, String userId);
 }

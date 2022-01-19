@@ -1,9 +1,11 @@
 package xyz.stasiak.cobudget.category;
 
 import io.vavr.collection.Set;
+import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound;
+import xyz.stasiak.cobudget.category.exception.MainCategoryNotFound;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -12,6 +14,10 @@ class CategoryApplicationService {
     private final CategoryRepository repository;
 
     Category add(Category category) {
+        Option<Category> possibleExistingCategory = repository.findByParentIdAndName(category.getParentId(), category.getName(), category.getUserId());
+        if (possibleExistingCategory.isDefined()) {
+            return enable(possibleExistingCategory.get());
+        }
         return repository.save(category);
     }
 
@@ -27,5 +33,16 @@ class CategoryApplicationService {
             }
         }
         repository.save(category);
+    }
+
+    private Category enable(Category category) {
+        if (category.isSubCategory()) {
+            Category mainCategory = repository.findById(category.getParentId()).getOrElseThrow(() -> new MainCategoryNotFound(category.getName()));
+            mainCategory.setDisabled(false);
+            log.debug("Enabled category with id {}", mainCategory.getId());
+        }
+        category.setDisabled(false);
+        log.debug("Enabled category with id {}", category.getId());
+        return category;
     }
 }
