@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.category
 
 
 import io.vavr.collection.HashMap
+import io.vavr.collection.Set
 import io.vavr.control.Option
 import spock.lang.Specification
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound
@@ -30,6 +31,16 @@ class CategoryApplicationServiceSpec extends Specification {
         then:
         thrown(CategoryIdNotFound)
     }
+
+    def "disable all subcategories when disabling main category"() {
+        when:
+        categoryApplicationService.disable(1L)
+
+        then:
+        repository.findById(1L).get().isDisabled()
+        repository.findById(2L).get().isDisabled()
+        repository.findById(3L).get().isDisabled()
+    }
 }
 
 class TestCategoryRepository implements CategoryRepository {
@@ -45,10 +56,6 @@ class TestCategoryRepository implements CategoryRepository {
         )
     }
 
-    Option<Category> findById(long id) {
-        return categories.get(id)
-    }
-
     @Override
     Category save(Category category) {
         if (category.getId() == null) {
@@ -57,5 +64,14 @@ class TestCategoryRepository implements CategoryRepository {
         }
         categories = categories.put(category.getId(), category)
         return category
+    }
+
+    Option<Category> findById(long id) {
+        return categories.get(id)
+    }
+
+    @Override
+    Set<Category> findAllByParentId(long parentId) {
+        return categories.values().filter(category -> category.getParentId() == parentId).toSet()
     }
 }

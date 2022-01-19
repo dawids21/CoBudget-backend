@@ -1,5 +1,6 @@
 package xyz.stasiak.cobudget.category;
 
+import io.vavr.collection.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound;
@@ -15,9 +16,16 @@ class CategoryApplicationService {
     }
 
     void disable(long id) {
-        var category = repository.findById(id).getOrElseThrow(() -> new CategoryIdNotFound(id));
+        Category category = repository.findById(id).getOrElseThrow(() -> new CategoryIdNotFound(id));
         category.setDisabled(true);
         log.debug("Disabled category with id {}", id);
+        if (category.isMainCategory()) {
+            Set<Category> subcategories = repository.findAllByParentId(category.getId());
+            for (Category subcategory : subcategories) {
+                subcategory.setDisabled(true);
+                log.debug("Disabled category with id {}", subcategory.getId());
+            }
+        }
         repository.save(category);
     }
 }

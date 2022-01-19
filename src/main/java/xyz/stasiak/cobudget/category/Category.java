@@ -26,4 +26,7 @@ class Category {
         return new Category(null, userId, dto.parentId(), dto.name(), false);
     }
 
+    boolean isMainCategory() {
+        return parentId == null;
+    }
 }
