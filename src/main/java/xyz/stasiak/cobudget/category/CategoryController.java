@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound;
+import xyz.stasiak.cobudget.category.exception.MainCategoryNotFound;
 import xyz.stasiak.cobudget.common.ErrorMessage;
 import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.common.UserIdNotFound;
@@ -36,6 +37,12 @@ class CategoryController {
 
     @ExceptionHandler(CategoryIdNotFound.class)
     ResponseEntity<ErrorMessage> handleCategoryNotFound(CategoryIdNotFound exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception));
+    }
+
+    @ExceptionHandler(MainCategoryNotFound.class)
+    ResponseEntity<ErrorMessage> handleMainCategoryNotFound(MainCategoryNotFound exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception));
     }
