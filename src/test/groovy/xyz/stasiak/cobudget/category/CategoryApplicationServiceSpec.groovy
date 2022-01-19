@@ -4,6 +4,7 @@ package xyz.stasiak.cobudget.category
 import io.vavr.collection.HashMap
 import io.vavr.control.Option
 import spock.lang.Specification
+import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound
 
 class CategoryApplicationServiceSpec extends Specification {
 
@@ -17,6 +18,17 @@ class CategoryApplicationServiceSpec extends Specification {
         then:
         def category = repository.findById(2L).get()
         category.isDisabled()
+    }
+
+    def "disable throw exception when category not found"() {
+        given:
+        def notExistingId = 6L
+
+        when:
+        categoryApplicationService.disable(notExistingId)
+
+        then:
+        thrown(CategoryIdNotFound)
     }
 }
 
