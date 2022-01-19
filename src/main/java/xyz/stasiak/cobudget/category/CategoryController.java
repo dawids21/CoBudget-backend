@@ -18,12 +18,14 @@ class CategoryController {
 
     @PostMapping
     ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
-
         var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
-
         var category = Category.of(dto, userId.id());
-
         return ResponseEntity.ok(categoryApplicationService.add(category));
     }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable long id) {
+        categoryApplicationService.disable(id);
+        return ResponseEntity.noContent().build();
+    }
 }
