@@ -16,7 +16,7 @@ class CategoryApplicationService {
     Category add(Category category) {
         Option<Category> possibleExistingCategory = repository.findByParentIdAndName(category.getParentId(), category.getName(), category.getUserId());
         if (possibleExistingCategory.isDefined()) {
-            return enable(possibleExistingCategory.get());
+            return repository.save(enable(possibleExistingCategory.get()));
         }
         return repository.save(category);
     }
@@ -40,6 +40,7 @@ class CategoryApplicationService {
             Category mainCategory = repository.findById(category.getParentId()).getOrElseThrow(() -> new MainCategoryNotFound(category.getName()));
             mainCategory.setDisabled(false);
             log.debug("Enabled category with id {}", mainCategory.getId());
+            repository.save(mainCategory);
         }
         category.setDisabled(false);
         log.debug("Enabled category with id {}", category.getId());
