@@ -7,4 +7,14 @@ ignore:
         reason: H2 database is not used in production
         expires: 2022-06-01T00:00:00.000Z
         created: 2022-04-05T20:16:01.410Z
+  SNYK-JAVA-COMH2DATABASE-1769238:
+    - '*':
+        reason: H2 database is not used in production
+        expires: 2022-06-01T00:00:00.000Z
+        created: 2022-04-05T20:20:32.123Z
+  SNYK-JAVA-COMH2DATABASE-2331071:
+    - '*':
+        reason: H2 database is not used in production
+        expires: 2022-06-01T00:00:00.000Z
+        created: 2022-04-05T20:20:54.274Z
 patch: {}
