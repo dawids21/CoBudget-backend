@@ -5,7 +5,7 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.Repository;
 
 @org.springframework.stereotype.Repository
-interface CategoryQueryRepository extends Repository<CategoryReadModel, Long> {
+public interface CategoryQueryRepository extends Repository<CategoryReadModel, Long> {
 
     @Query("select id, null, name from category where parent_id is null and user_id = :userId and disabled = false")
     List<CategoryReadModel> findCategories(String userId);
