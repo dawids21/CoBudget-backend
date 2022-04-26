@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 @Repository
-public interface EntryQueryRepository extends org.springframework.data.repository.Repository<EntryReadModel, Long> {
+interface EntryQueryRepository extends org.springframework.data.repository.Repository<EntryReadModel, Long> {
     @Query("""
             select entry.id, amount, date, category.name as category, subcategory.name as subcategory
             from entry
