@@ -1,15 +1,35 @@
 version: "3.9"
 
 services:
-  postgres:
-    container_name: postgres_container
+  app:
+    depends_on:
+      - db
+    container_name: cobudget-backend-app
+    build: .
+    image: stasiakxyz/cobudget-backend
+    environment:
+      APP_PORT: "8080"
+      OAUTH_ISSUER: "https://dev-01647397.okta.com/oauth2/default"
+      JDBC_DATABASE_URL: "jdbc:postgresql://db:5432/postgres"
+      JDBC_DATABASE_USERNAME: "postgres"
+      JDBC_DATABASE_PASSWORD: "password"
+      CORS_ORIGINS: "http://localhost:8080"
+    ports:
+      - "8081:8080"
+    networks:
+      - cobudget-backend-network
+  db:
+    container_name: cobudget-backend-db
     image: postgres
     environment:
       POSTGRES_PASSWORD: password
     volumes:
       - postgres-cobudget:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    networks:
+      - cobudget-backend-network
 
 volumes:
   postgres-cobudget:
+
+networks:
+  cobudget-backend-network:
