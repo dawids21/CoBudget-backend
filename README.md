@@ -2,7 +2,6 @@
 
 Control your budget
 
-
 ![Week view on desktop](https://user-images.githubusercontent.com/50179033/165453462-88aa6445-d024-404a-8481-55efcc85f7f2.png)
 <p align="center">
   <img height="500" src="https://user-images.githubusercontent.com/50179033/165453889-b79564e4-4482-4689-a47a-74cde946272b.png">
@@ -38,8 +37,14 @@ This app helps you take control over your budget. You can:
 
 ## Local usage
 
-You need to install Docker and Docker Compose. In the main directory run `docker-compose up --build` to run application.
-You can reach it at `http://localhost:5000`.
+You need to install Docker and Docker Compose. To build Docker image use
+
+```
+./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME
+```
+
+In the main directory run `docker-compose up --build` to run application.
+You can reach it at `http://localhost:8081`.
 
 ## Example of use
 
