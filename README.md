@@ -2,9 +2,11 @@
 
 Control your budget
 
-|                                                           Week view                                                            |                                                                     Phone                                                                      |
-|:------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://user-images.githubusercontent.com/50179033/165453462-88aa6445-d024-404a-8481-55efcc85f7f2.png" width="50%"> | <img src="https://user-images.githubusercontent.com/50179033/165453889-b79564e4-4482-4689-a47a-74cde946272b.png" width="50%"> |
+
+![Week view on desktop](https://user-images.githubusercontent.com/50179033/165453462-88aa6445-d024-404a-8481-55efcc85f7f2.png)
+<p align="center">
+  <img height="500" src="https://user-images.githubusercontent.com/50179033/165453889-b79564e4-4482-4689-a47a-74cde946272b.png">
+</p>
 
 ## Introduction
 
