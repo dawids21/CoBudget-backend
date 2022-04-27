@@ -5,8 +5,7 @@ services:
     depends_on:
       - db
     container_name: cobudget-backend-app
-    build: .
-    image: stasiakxyz/cobudget-backend
+    image: dawids21/cobudget-backend
     environment:
       APP_PORT: "8080"
       OAUTH_ISSUER: "https://dev-01647397.okta.com/oauth2/default"
