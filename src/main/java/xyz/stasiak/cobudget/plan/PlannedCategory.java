@@ -9,9 +9,9 @@ class PlannedCategory {
     private Long categoryKey;
     private int amount;
 
-    PlannedCategory(Long plan, Long categoryKey) {
+    PlannedCategory(Long plan, Long categoryKey, int amount) {
         this.plan = plan;
         this.categoryKey = categoryKey;
-        this.amount = 0;
+        this.amount = amount;
     }
 }

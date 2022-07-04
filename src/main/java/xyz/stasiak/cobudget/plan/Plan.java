@@ -24,4 +24,13 @@ class Plan {
         this.userId = userId;
         this.yearAndMonth = yearAndMonth;
     }
+
+    public void planCategory(Long categoryId, int amount) {
+        PlannedCategory plannedCategory = new PlannedCategory(id, categoryId, amount);
+        categories.put(categoryId, plannedCategory);
+    }
+
+    public PlannedCategory getPlanForCategory(Long categoryId) {
+        return categories.get(categoryId);
+    }
 }
