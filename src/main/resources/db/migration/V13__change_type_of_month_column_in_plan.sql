@@ -2,4 +2,4 @@ alter table plan
     rename month to yearAndMonth;
 
 alter table plan
-    alter column yearAndMonth type date;
+    alter column yearAndMonth type date using yearAndMonth::date;
