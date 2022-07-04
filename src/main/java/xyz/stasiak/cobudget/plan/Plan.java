@@ -1,6 +1,7 @@
 package xyz.stasiak.cobudget.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.vavr.control.Option;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -25,12 +26,14 @@ class Plan {
         this.yearAndMonth = yearAndMonth;
     }
 
-    public void planCategory(Long categoryId, int amount) {
+    void planCategory(Long categoryId, int amount) {
         PlannedCategory plannedCategory = new PlannedCategory(id, categoryId, amount);
         categories.put(categoryId, plannedCategory);
     }
 
-    public PlannedCategory getPlanForCategory(Long categoryId) {
-        return categories.get(categoryId);
+    int getAmountPlannedForCategory(Long categoryId) {
+        return Option.of(categories.get(categoryId))
+                .map(PlannedCategory::getAmount)
+                .getOrElse(0);
     }
 }

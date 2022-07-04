@@ -15,8 +15,7 @@ class PlanSpec extends Specification {
         plan.planCategory(2L, 300)
 
         then:
-        def plannedCategory = plan.getPlanForCategory(2L)
-        plannedCategory.getAmount() == 300
+        plan.getAmountPlannedForCategory(2L) == 300
     }
 
     def "plan should have year and month specified"() {

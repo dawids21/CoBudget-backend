@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 class PlanConfig {
 
     @Bean
-    PlanApplicationService planApplicationService() {
-        return new PlanApplicationService();
+    PlanApplicationService planApplicationService(PlanRepository planRepository) {
+        return new PlanApplicationService(planRepository);
     }
 }
