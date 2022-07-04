@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,13 +16,12 @@ class Plan {
 
     @JsonIgnore
     private String userId;
-    private String month;
+    private LocalDate yearAndMonth;
 
     private Map<Long, PlannedCategory> categories = new HashMap<>();
 
-    Plan(Long id, String userId, String month) {
-        this.id = id;
+    Plan(String userId, LocalDate yearAndMonth) {
         this.userId = userId;
-        this.month = month;
+        this.yearAndMonth = yearAndMonth;
     }
 }
