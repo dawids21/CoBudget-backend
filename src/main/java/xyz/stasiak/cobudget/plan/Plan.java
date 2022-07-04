@@ -1,9 +1,11 @@
 package xyz.stasiak.cobudget.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.vavr.collection.Map;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 class Plan {
@@ -13,8 +15,13 @@ class Plan {
 
     @JsonIgnore
     private String userId;
-
     private String month;
-    
-    private Map<Long, PlannedCategory> categories;
+
+    private Map<Long, PlannedCategory> categories = new HashMap<>();
+
+    Plan(Long id, String userId, String month) {
+        this.id = id;
+        this.userId = userId;
+        this.month = month;
+    }
 }
