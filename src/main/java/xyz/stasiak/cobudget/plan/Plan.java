@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.vavr.control.Option;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -19,19 +20,20 @@ class Plan {
     private String userId;
     private LocalDate yearAndMonth;
 
-    private Map<Long, PlannedCategory> categories = new HashMap<>();
+    @MappedCollection(idColumn = "plan", keyColumn = "category_key")
+    private Map<Integer, PlannedCategory> categories = new HashMap<>();
 
     Plan(String userId, LocalDate yearAndMonth) {
         this.userId = userId;
         this.yearAndMonth = yearAndMonth;
     }
 
-    void planCategory(Long categoryId, int amount) {
-        PlannedCategory plannedCategory = new PlannedCategory(id, categoryId, amount);
+    void planCategory(Integer categoryId, int amount) {
+        PlannedCategory plannedCategory = new PlannedCategory(amount);
         categories.put(categoryId, plannedCategory);
     }
 
-    int getAmountPlannedForCategory(Long categoryId) {
+    int getAmountPlannedForCategory(Integer categoryId) {
         return Option.of(categories.get(categoryId))
                 .map(PlannedCategory::getAmount)
                 .getOrElse(0);

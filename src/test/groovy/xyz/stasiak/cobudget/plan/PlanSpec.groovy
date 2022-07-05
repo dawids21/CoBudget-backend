@@ -12,10 +12,10 @@ class PlanSpec extends Specification {
         def plan = aPlan()
 
         when:
-        plan.planCategory(2L, 300)
+        plan.planCategory(2, 300)
 
         then:
-        plan.getAmountPlannedForCategory(2L) == 300
+        plan.getAmountPlannedForCategory(2) == 300
     }
 
     def "plan should have year and month specified"() {

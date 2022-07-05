@@ -21,13 +21,14 @@ class PlanApplicationService {
         );
     }
 
-    void planCategory(Long planId, Long categoryId, int amount) {
+    void planCategory(Long planId, Integer categoryId, int amount) {
         Plan plan = planRepository.findById(planId)
                 .getOrElseThrow(() -> new IllegalArgumentException(String.format("Plan with id %d not found", planId)));
         plan.planCategory(categoryId, amount);
+        planRepository.save(plan);
     }
 
-    int getAmountPlannedFor(Long planId, Long categoryId) {
+    int getAmountPlannedFor(Long planId, Integer categoryId) {
         Plan plan = planRepository.findById(planId)
                 .getOrElseThrow(() -> new IllegalArgumentException(String.format("Plan with id %d not found", planId)));
         return plan.getAmountPlannedForCategory(categoryId);

@@ -18,7 +18,7 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1))
         !plan.isEmpty()
     }
-    
+
     def "should return empty option when plan is not created"() {
         expect:
         def plan = planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1))
@@ -30,16 +30,16 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         when:
-        planApplicationService.planCategory(plan.getId(), 2L, 300)
+        planApplicationService.planCategory(plan.getId(), 2, 300)
 
         then:
-        def amount = planApplicationService.getAmountPlannedFor(plan.getId(), 2L)
+        def amount = planApplicationService.getAmountPlannedFor(plan.getId(), 2)
         amount == 300
     }
 
     def "should throw an exception when plan does not exists"() {
         when:
-        planApplicationService.planCategory(33L, 2L, 300)
+        planApplicationService.planCategory(33L, 2, 300)
 
         then:
         thrown(IllegalArgumentException)
@@ -50,7 +50,7 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         expect:
-        planApplicationService.getAmountPlannedFor(plan.getId(), 3L) == 0
+        planApplicationService.getAmountPlannedFor(plan.getId(), 3) == 0
     }
 
     private aPlan() {
