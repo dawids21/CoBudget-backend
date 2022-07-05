@@ -41,4 +41,8 @@ class PlanApplicationService {
         plan.changePlanForCategory(categoryId, newAmount);
         return planRepository.save(plan);
     }
+
+    void deletePlan(Long planId) {
+        planRepository.deleteById(planId);
+    }
 }

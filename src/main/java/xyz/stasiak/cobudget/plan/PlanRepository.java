@@ -14,4 +14,7 @@ interface PlanRepository extends Repository<Plan, Long> {
 
     @Query("select * from plan where user_id = :userId and extract(year from year_and_month) = :year and  extract(month from year_and_month) = :month")
     Option<Plan> findByUserIdAndYearAndMonth(String userId, int year, int month);
+
+    @Query("delete from plan where id = :id")
+    void deleteById(Long id);
 }

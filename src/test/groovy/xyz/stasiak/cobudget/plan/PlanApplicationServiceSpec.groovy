@@ -6,6 +6,7 @@ import xyz.stasiak.cobudget.plan.exception.PlanNotFound
 
 import java.time.LocalDate
 import java.time.Month
+import java.util.concurrent.atomic.AtomicLong
 
 class PlanApplicationServiceSpec extends Specification {
 
@@ -66,6 +67,17 @@ class PlanApplicationServiceSpec extends Specification {
         planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID) == 100
     }
 
+    def "should be able to delete plan"() {
+        given:
+        def plan = aPlan()
+
+        when:
+        planApplicationService.deletePlan(plan.getId())
+
+        then:
+        planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1)).isEmpty()
+    }
+
     private aPlan() {
         planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
     }
@@ -79,10 +91,11 @@ class PlanApplicationServiceSpec extends Specification {
     private static class TestPlanRepository implements PlanRepository {
 
         private final Map<Long, Plan> plans = new HashMap<>()
+        private final AtomicLong id = new AtomicLong(1L)
 
         @Override
         Plan save(Plan plan) {
-            plan.setId(plans.keySet().size() + 1)
+            plan.setId(id.getAndIncrement())
             plans.put(plan.getId(), plan)
             return plans.get(plan.getId())
         }
@@ -102,6 +115,11 @@ class PlanApplicationServiceSpec extends Specification {
                             .filter(plan -> plan.getYearAndMonth().getMonthValue() == month)
                             .findAny()
             )
+        }
+
+        @Override
+        void deleteById(Long id) {
+            plans.remove(id)
         }
     }
 }
