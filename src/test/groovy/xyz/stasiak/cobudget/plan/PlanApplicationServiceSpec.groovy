@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.plan
 
 import io.vavr.control.Option
 import spock.lang.Specification
+import xyz.stasiak.cobudget.common.UserId
 import xyz.stasiak.cobudget.plan.exception.PlanNotFound
 
 import java.time.LocalDate
@@ -12,19 +13,20 @@ class PlanApplicationServiceSpec extends Specification {
 
     final def planApplicationService = new PlanApplicationService(new TestPlanRepository())
     final static def CATEGORY_ID = 2
+    private static final UserId USER_ID = new UserId("user")
 
     def "should create plan for new month"() {
         given:
         aPlan()
 
         expect:
-        def plan = planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1))
+        def plan = planApplicationService.getPlanFor(USER_ID, LocalDate.of(2022, Month.JULY, 1))
         !plan.isEmpty()
     }
 
     def "should return empty option when plan is not created"() {
         expect:
-        def plan = planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1))
+        def plan = planApplicationService.getPlanFor(USER_ID, LocalDate.of(2022, Month.JULY, 1))
         plan.isEmpty()
     }
 
@@ -75,7 +77,7 @@ class PlanApplicationServiceSpec extends Specification {
         planApplicationService.deletePlan(plan.getId())
 
         then:
-        planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1)).isEmpty()
+        planApplicationService.getPlanFor(USER_ID, LocalDate.of(2022, Month.JULY, 1)).isEmpty()
     }
 
     def "should delete plan for category"() {
@@ -101,11 +103,11 @@ class PlanApplicationServiceSpec extends Specification {
     }
 
     private aPlan() {
-        planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
+        planApplicationService.createPlan(USER_ID, LocalDate.of(2022, Month.JULY, 1))
     }
 
     private aPlanWithCategoryPlanned() {
-        def plan = planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
+        def plan = planApplicationService.createPlan(USER_ID, LocalDate.of(2022, Month.JULY, 1))
         planApplicationService.planCategory(plan.getId(), CATEGORY_ID, 300)
         return plan
     }

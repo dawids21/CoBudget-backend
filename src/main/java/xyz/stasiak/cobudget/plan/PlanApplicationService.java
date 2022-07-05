@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.plan;
 
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
+import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.plan.exception.PlanNotFound;
 
 import java.time.LocalDate;
@@ -11,14 +12,14 @@ class PlanApplicationService {
 
     private final PlanRepository planRepository;
 
-    Plan createPlan(String userId, LocalDate yearAndMonth) {
-        Plan plan = new Plan(userId, yearAndMonth);
+    Plan createPlan(UserId userId, LocalDate yearAndMonth) {
+        Plan plan = new Plan(userId.id(), yearAndMonth);
         return planRepository.save(plan);
     }
 
-    Option<Plan> getPlanFor(String userId, LocalDate yearAndMonth) {
+    Option<Plan> getPlanFor(UserId userId, LocalDate yearAndMonth) {
         return planRepository.findByUserIdAndYearAndMonth(
-                userId, yearAndMonth.getYear(), yearAndMonth.getMonthValue()
+                userId.id(), yearAndMonth.getYear(), yearAndMonth.getMonthValue()
         );
     }
 
@@ -46,9 +47,9 @@ class PlanApplicationService {
         planRepository.deleteById(planId);
     }
 
-    PlanReadModel readPlan(String userId, LocalDate yearAndMonth) {
+    PlanReadModel readPlan(UserId userId, LocalDate yearAndMonth) {
         return planRepository.readPlanByUserIdAndYearAndMonth(
-                        userId, yearAndMonth.getYear(), yearAndMonth.getMonthValue()
+                        userId.id(), yearAndMonth.getYear(), yearAndMonth.getMonthValue()
                 )
                 .getOrElseThrow(() -> new PlanNotFound(userId, yearAndMonth));
     }

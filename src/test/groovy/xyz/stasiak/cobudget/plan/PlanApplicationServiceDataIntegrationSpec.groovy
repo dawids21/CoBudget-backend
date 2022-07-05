@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.plan
 
 import org.springframework.beans.factory.annotation.Autowired
 import xyz.stasiak.cobudget.DataIntegrationSpec
+import xyz.stasiak.cobudget.common.UserId
 import xyz.stasiak.cobudget.plan.exception.PlanNotFound
 
 import java.time.LocalDate
@@ -13,6 +14,8 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
     private PlanRepository planRepository
 
     private PlanApplicationService planApplicationService
+
+    private final UserId USER_ID = new UserId("userId")
 
     void setup() {
         planApplicationService = new PlanApplicationService(planRepository)
@@ -27,7 +30,7 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         aPlan()
 
         when:
-        def plan = planApplicationService.getPlanFor("userId", LocalDate.of(2022, Month.JULY, 5))
+        def plan = planApplicationService.getPlanFor(USER_ID, LocalDate.of(2022, Month.JULY, 5))
 
         then:
         !plan.isEmpty()
@@ -53,7 +56,7 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         planApplicationService.planCategory(plan.getId(), 2, 300)
 
         when:
-        def planReadModel = planApplicationService.readPlan("userId", LocalDate.of(2022, Month.JULY, 5))
+        def planReadModel = planApplicationService.readPlan(USER_ID, LocalDate.of(2022, Month.JULY, 5))
 
         then:
         planReadModel.id() == plan.getId()
@@ -68,14 +71,14 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
 
     def "should throw an exception when read model not found"() {
         when:
-        planApplicationService.readPlan("userId", LocalDate.of(2022, Month.JULY, 5))
+        planApplicationService.readPlan(USER_ID, LocalDate.of(2022, Month.JULY, 5))
 
         then:
         thrown(PlanNotFound)
     }
 
     private aPlan() {
-        planApplicationService.createPlan("userId", LocalDate.of(2022, Month.JULY, 1))
+        planApplicationService.createPlan(USER_ID, LocalDate.of(2022, Month.JULY, 1))
     }
 
     private static def categoriesSql() {
