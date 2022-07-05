@@ -78,6 +78,28 @@ class PlanApplicationServiceSpec extends Specification {
         planApplicationService.getPlanFor("user", LocalDate.of(2022, Month.JULY, 1)).isEmpty()
     }
 
+    def "should delete plan for category"() {
+        given:
+        def plan = aPlanWithCategoryPlanned()
+
+        when:
+        planApplicationService.deletePlannedCategory(plan.getId(), CATEGORY_ID)
+
+        then:
+        planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID) == 0
+    }
+
+    def "should pass deleting plan for non existing category"() {
+        given:
+        def plan = aPlan()
+
+        when:
+        planApplicationService.deletePlannedCategory(plan.getId(), CATEGORY_ID)
+
+        then:
+        noExceptionThrown()
+    }
+
     private aPlan() {
         planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
     }

@@ -52,4 +52,11 @@ class PlanApplicationService {
                 )
                 .getOrElseThrow(() -> new PlanNotFound(userId, yearAndMonth));
     }
+
+    Plan deletePlannedCategory(Long planId, Integer categoryId) {
+        Plan plan = planRepository.findById(planId)
+                .getOrElseThrow(() -> new PlanNotFound(planId));
+        plan.removePlanForCategory(categoryId);
+        return planRepository.save(plan);
+    }
 }

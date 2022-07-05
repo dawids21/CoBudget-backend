@@ -45,4 +45,8 @@ class Plan {
         plannedCategory.changePlan(newAmount);
         categories.put(categoryId, plannedCategory);
     }
+
+    void removePlanForCategory(Integer categoryId) {
+        categories.remove(categoryId);
+    }
 }
