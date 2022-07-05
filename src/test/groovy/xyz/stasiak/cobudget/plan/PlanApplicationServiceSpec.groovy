@@ -121,5 +121,10 @@ class PlanApplicationServiceSpec extends Specification {
         void deleteById(Long id) {
             plans.remove(id)
         }
+
+        @Override
+        Option<PlanReadModel> readPlanByUserIdAndYearAndMonth(String userId, int year, int month) {
+            return Option.none()
+        }
     }
 }

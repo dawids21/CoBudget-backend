@@ -45,4 +45,11 @@ class PlanApplicationService {
     void deletePlan(Long planId) {
         planRepository.deleteById(planId);
     }
+
+    PlanReadModel readPlan(String userId, LocalDate yearAndMonth) {
+        return planRepository.readPlanByUserIdAndYearAndMonth(
+                        userId, yearAndMonth.getYear(), yearAndMonth.getMonthValue()
+                )
+                .getOrElseThrow(() -> new PlanNotFound(userId, yearAndMonth));
+    }
 }
