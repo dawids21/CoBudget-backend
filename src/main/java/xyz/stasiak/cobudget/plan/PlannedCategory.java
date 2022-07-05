@@ -10,4 +10,8 @@ class PlannedCategory {
     PlannedCategory(int amount) {
         this.amount = amount;
     }
+
+    void changePlan(int amount) {
+        this.amount = amount;
+    }
 }

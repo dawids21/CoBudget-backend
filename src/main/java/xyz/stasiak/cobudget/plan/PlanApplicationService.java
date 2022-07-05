@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.plan;
 
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
+import xyz.stasiak.cobudget.plan.exception.PlanNotFound;
 
 import java.time.LocalDate;
 
@@ -23,14 +24,21 @@ class PlanApplicationService {
 
     void planCategory(Long planId, Integer categoryId, int amount) {
         Plan plan = planRepository.findById(planId)
-                .getOrElseThrow(() -> new IllegalArgumentException(String.format("Plan with id %d not found", planId)));
+                .getOrElseThrow(() -> new PlanNotFound(planId));
         plan.planCategory(categoryId, amount);
         planRepository.save(plan);
     }
 
     int getAmountPlannedFor(Long planId, Integer categoryId) {
         Plan plan = planRepository.findById(planId)
-                .getOrElseThrow(() -> new IllegalArgumentException(String.format("Plan with id %d not found", planId)));
+                .getOrElseThrow(() -> new PlanNotFound(planId));
         return plan.getAmountPlannedForCategory(categoryId);
+    }
+
+    Plan changeCategoryPlan(Long planId, Integer categoryId, int newAmount) {
+        Plan plan = planRepository.findById(planId)
+                .getOrElseThrow(() -> new PlanNotFound(planId));
+        plan.changePlanForCategory(categoryId, newAmount);
+        return planRepository.save(plan);
     }
 }

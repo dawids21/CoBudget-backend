@@ -38,4 +38,11 @@ class Plan {
                 .map(PlannedCategory::getAmount)
                 .getOrElse(0);
     }
+
+    void changePlanForCategory(Integer categoryId, int newAmount) {
+        PlannedCategory plannedCategory = Option.of(categories.get(categoryId))
+                .getOrElse(() -> new PlannedCategory(newAmount));
+        plannedCategory.changePlan(newAmount);
+        categories.put(categoryId, plannedCategory);
+    }
 }

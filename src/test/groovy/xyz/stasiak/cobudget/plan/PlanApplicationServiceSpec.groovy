@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.plan
 
 import io.vavr.control.Option
 import spock.lang.Specification
+import xyz.stasiak.cobudget.plan.exception.PlanNotFound
 
 import java.time.LocalDate
 import java.time.Month
@@ -9,6 +10,7 @@ import java.time.Month
 class PlanApplicationServiceSpec extends Specification {
 
     final def planApplicationService = new PlanApplicationService(new TestPlanRepository())
+    final static def CATEGORY_ID = 2
 
     def "should create plan for new month"() {
         given:
@@ -30,19 +32,19 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         when:
-        planApplicationService.planCategory(plan.getId(), 2, 300)
+        planApplicationService.planCategory(plan.getId(), CATEGORY_ID, 300)
 
         then:
-        def amount = planApplicationService.getAmountPlannedFor(plan.getId(), 2)
+        def amount = planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID)
         amount == 300
     }
 
     def "should throw an exception when plan does not exists"() {
         when:
-        planApplicationService.planCategory(33L, 2, 300)
+        planApplicationService.planCategory(33L, CATEGORY_ID, 300)
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(PlanNotFound)
     }
 
     def "should return 0 when category is not planned"() {
@@ -53,8 +55,25 @@ class PlanApplicationServiceSpec extends Specification {
         planApplicationService.getAmountPlannedFor(plan.getId(), 3) == 0
     }
 
+    def "should be able to change plan for given category"() {
+        given:
+        def plan = aPlanWithCategoryPlanned()
+
+        when:
+        planApplicationService.changeCategoryPlan(plan.getId(), CATEGORY_ID, 100)
+
+        then:
+        planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID) == 100
+    }
+
     private aPlan() {
         planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
+    }
+
+    private aPlanWithCategoryPlanned() {
+        def plan = planApplicationService.createPlan("user", LocalDate.of(2022, Month.JULY, 1))
+        planApplicationService.planCategory(plan.getId(), CATEGORY_ID, 300)
+        return plan
     }
 
     private static class TestPlanRepository implements PlanRepository {
