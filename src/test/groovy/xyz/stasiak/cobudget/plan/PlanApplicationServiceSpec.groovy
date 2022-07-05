@@ -35,16 +35,16 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         when:
-        planApplicationService.planCategory(plan.getId(), CATEGORY_ID, 300)
+        planApplicationService.planCategory(USER_ID, plan.getId(), CATEGORY_ID, 300)
 
         then:
-        def amount = planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID)
+        def amount = planApplicationService.getAmountPlannedFor(USER_ID, plan.getId(), CATEGORY_ID)
         amount == 300
     }
 
     def "should throw an exception when plan does not exists"() {
         when:
-        planApplicationService.planCategory(33L, CATEGORY_ID, 300)
+        planApplicationService.planCategory(USER_ID, 33L, CATEGORY_ID, 300)
 
         then:
         thrown(PlanNotFound)
@@ -55,7 +55,7 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         expect:
-        planApplicationService.getAmountPlannedFor(plan.getId(), 3) == 0
+        planApplicationService.getAmountPlannedFor(USER_ID, plan.getId(), 3) == 0
     }
 
     def "should be able to change plan for given category"() {
@@ -63,10 +63,10 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlanWithCategoryPlanned()
 
         when:
-        planApplicationService.changeCategoryPlan(plan.getId(), CATEGORY_ID, 100)
+        planApplicationService.changeCategoryPlan(USER_ID, plan.getId(), CATEGORY_ID, 100)
 
         then:
-        planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID) == 100
+        planApplicationService.getAmountPlannedFor(USER_ID, plan.getId(), CATEGORY_ID) == 100
     }
 
     def "should be able to delete plan"() {
@@ -74,7 +74,7 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         when:
-        planApplicationService.deletePlan(plan.getId())
+        planApplicationService.deletePlan(USER_ID, plan.getId())
 
         then:
         planApplicationService.getPlanFor(USER_ID, LocalDate.of(2022, Month.JULY, 1)).isEmpty()
@@ -85,10 +85,10 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlanWithCategoryPlanned()
 
         when:
-        planApplicationService.deletePlannedCategory(plan.getId(), CATEGORY_ID)
+        planApplicationService.deletePlannedCategory(USER_ID, plan.getId(), CATEGORY_ID)
 
         then:
-        planApplicationService.getAmountPlannedFor(plan.getId(), CATEGORY_ID) == 0
+        planApplicationService.getAmountPlannedFor(USER_ID, plan.getId(), CATEGORY_ID) == 0
     }
 
     def "should pass deleting plan for non existing category"() {
@@ -96,7 +96,7 @@ class PlanApplicationServiceSpec extends Specification {
         def plan = aPlan()
 
         when:
-        planApplicationService.deletePlannedCategory(plan.getId(), CATEGORY_ID)
+        planApplicationService.deletePlannedCategory(USER_ID, plan.getId(), CATEGORY_ID)
 
         then:
         noExceptionThrown()
@@ -108,7 +108,7 @@ class PlanApplicationServiceSpec extends Specification {
 
     private aPlanWithCategoryPlanned() {
         def plan = planApplicationService.createPlan(USER_ID, LocalDate.of(2022, Month.JULY, 1))
-        planApplicationService.planCategory(plan.getId(), CATEGORY_ID, 300)
+        planApplicationService.planCategory(USER_ID, plan.getId(), CATEGORY_ID, 300)
         return plan
     }
 
@@ -125,7 +125,7 @@ class PlanApplicationServiceSpec extends Specification {
         }
 
         @Override
-        Option<Plan> findById(Long id) {
+        Option<Plan> findByIdAndUserId(Long id, String userId) {
             return Option.of(plans.get(id))
         }
 
@@ -142,7 +142,7 @@ class PlanApplicationServiceSpec extends Specification {
         }
 
         @Override
-        void deleteById(Long id) {
+        void deleteById(Long id, String userId) {
             plans.remove(id)
         }
 

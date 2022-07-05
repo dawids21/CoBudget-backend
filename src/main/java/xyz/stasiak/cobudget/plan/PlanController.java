@@ -38,28 +38,33 @@ class PlanController {
     }
 
     @DeleteMapping("/{planId}")
-    void deletePlan(@PathVariable Long planId) {
-        planApplicationService.deletePlan(planId);
+    void deletePlan(@PathVariable Long planId, @AuthenticationPrincipal Jwt jwt) {
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        planApplicationService.deletePlan(userId, planId);
     }
 
     @PostMapping("/{planId}/category/{categoryId}")
-    void planCategory(@PathVariable Long planId, @PathVariable Integer categoryId, @RequestParam int amount) {
-        planApplicationService.planCategory(planId, categoryId, amount);
+    void planCategory(@PathVariable Long planId, @PathVariable Integer categoryId, @RequestParam int amount, @AuthenticationPrincipal Jwt jwt) {
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        planApplicationService.planCategory(userId, planId, categoryId, amount);
     }
 
     @GetMapping("/{planId}/category/{categoryId}")
-    int getAmountPlannedFor(@PathVariable Long planId, @PathVariable Integer categoryId) {
-        return planApplicationService.getAmountPlannedFor(planId, categoryId);
+    int getAmountPlannedFor(@PathVariable Long planId, @PathVariable Integer categoryId, @AuthenticationPrincipal Jwt jwt) {
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        return planApplicationService.getAmountPlannedFor(userId, planId, categoryId);
     }
 
     @PatchMapping("/{planId}/category/{categoryId}")
-    void changePlannedAmountForCategory(@PathVariable Long planId, @PathVariable Integer categoryId, @RequestParam int newAmount) {
-        planApplicationService.changeCategoryPlan(planId, categoryId, newAmount);
+    void changePlannedAmountForCategory(@PathVariable Long planId, @PathVariable Integer categoryId, @RequestParam int newAmount, @AuthenticationPrincipal Jwt jwt) {
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        planApplicationService.changeCategoryPlan(userId, planId, categoryId, newAmount);
     }
 
     @DeleteMapping("/{planId}/category/{categoryId}")
-    void deletePlannedAmountForCategory(@PathVariable Long planId, @PathVariable Integer categoryId) {
-        planApplicationService.deletePlannedCategory(planId, categoryId);
+    void deletePlannedAmountForCategory(@PathVariable Long planId, @PathVariable Integer categoryId, @AuthenticationPrincipal Jwt jwt) {
+        UserId userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        planApplicationService.deletePlannedCategory(userId, planId, categoryId);
     }
 
     @ExceptionHandler(PlanNotFound.class)

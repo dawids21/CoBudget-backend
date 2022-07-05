@@ -41,10 +41,10 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         def plan = aPlan()
 
         when:
-        planApplicationService.planCategory(plan.getId(), 2, 300)
+        planApplicationService.planCategory(USER_ID, plan.getId(), 2, 300)
 
         then:
-        planApplicationService.getAmountPlannedFor(plan.getId(), 2)
+        planApplicationService.getAmountPlannedFor(USER_ID, plan.getId(), 2)
     }
 
     def "should return read model for plan"() {
@@ -53,7 +53,7 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         and:
         def plan = aPlan()
         and:
-        planApplicationService.planCategory(plan.getId(), 2, 300)
+        planApplicationService.planCategory(USER_ID, plan.getId(), 2, 300)
 
         when:
         def planReadModel = planApplicationService.readPlan(USER_ID, LocalDate.of(2022, Month.JULY, 5))

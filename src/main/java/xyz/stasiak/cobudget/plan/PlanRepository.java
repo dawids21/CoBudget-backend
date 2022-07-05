@@ -17,14 +17,14 @@ import java.util.ArrayList;
 interface PlanRepository extends Repository<Plan, Long> {
     Plan save(Plan plan);
 
-    @Query("select * from plan where id = :id")
-    Option<Plan> findById(Long id);
+    @Query("select * from plan where id = :id and user_id = :userId")
+    Option<Plan> findByIdAndUserId(Long id, String userId);
 
     @Query("select * from plan where user_id = :userId and extract(year from year_and_month) = :year and  extract(month from year_and_month) = :month")
     Option<Plan> findByUserIdAndYearAndMonth(String userId, int year, int month);
 
-    @Query("delete from plan where id = :id")
-    void deleteById(Long id);
+    @Query("delete from plan where id = :id and user_id = :userId")
+    void deleteById(Long id, String userId);
 
     @Query(resultSetExtractorClass = PlanReadModelExtractor.class, value = "select p.id as id, p.year_and_month as date, c.name as subcategoryName, pc.amount as amount from plan p left join planned_category pc on p.id = pc.plan inner join category c on pc.category_key = c.id where p.user_id = :userId and extract(year from p.year_and_month) = :year and  extract(month from p.year_and_month) = :month")
     Option<PlanReadModel> readPlanByUserIdAndYearAndMonth(String userId, int year, int month);

@@ -23,28 +23,28 @@ class PlanApplicationService {
         );
     }
 
-    void planCategory(Long planId, Integer categoryId, int amount) {
-        Plan plan = planRepository.findById(planId)
+    void planCategory(UserId userId, Long planId, Integer categoryId, int amount) {
+        Plan plan = planRepository.findByIdAndUserId(planId, userId.id())
                 .getOrElseThrow(() -> new PlanNotFound(planId));
         plan.planCategory(categoryId, amount);
         planRepository.save(plan);
     }
 
-    int getAmountPlannedFor(Long planId, Integer categoryId) {
-        Plan plan = planRepository.findById(planId)
+    int getAmountPlannedFor(UserId userId, Long planId, Integer categoryId) {
+        Plan plan = planRepository.findByIdAndUserId(planId, userId.id())
                 .getOrElseThrow(() -> new PlanNotFound(planId));
         return plan.getAmountPlannedForCategory(categoryId);
     }
 
-    Plan changeCategoryPlan(Long planId, Integer categoryId, int newAmount) {
-        Plan plan = planRepository.findById(planId)
+    Plan changeCategoryPlan(UserId userId, Long planId, Integer categoryId, int newAmount) {
+        Plan plan = planRepository.findByIdAndUserId(planId, userId.id())
                 .getOrElseThrow(() -> new PlanNotFound(planId));
         plan.changePlanForCategory(categoryId, newAmount);
         return planRepository.save(plan);
     }
 
-    void deletePlan(Long planId) {
-        planRepository.deleteById(planId);
+    void deletePlan(UserId userId, Long planId) {
+        planRepository.deleteById(planId, userId.id());
     }
 
     PlanReadModel readPlan(UserId userId, LocalDate yearAndMonth) {
@@ -54,8 +54,8 @@ class PlanApplicationService {
                 .getOrElseThrow(() -> new PlanNotFound(userId, yearAndMonth));
     }
 
-    Plan deletePlannedCategory(Long planId, Integer categoryId) {
-        Plan plan = planRepository.findById(planId)
+    Plan deletePlannedCategory(UserId userId, Long planId, Integer categoryId) {
+        Plan plan = planRepository.findByIdAndUserId(planId, userId.id())
                 .getOrElseThrow(() -> new PlanNotFound(planId));
         plan.removePlanForCategory(categoryId);
         return planRepository.save(plan);
