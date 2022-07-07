@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound;
 import xyz.stasiak.cobudget.common.ErrorMessage;
 import xyz.stasiak.cobudget.common.UserId;
 import xyz.stasiak.cobudget.common.UserIdNotFound;
@@ -68,7 +67,7 @@ class PlanController {
     }
 
     @ExceptionHandler(PlanNotFound.class)
-    ResponseEntity<ErrorMessage> handleCategoryNotFound(CategoryIdNotFound exception) {
+    ResponseEntity<ErrorMessage> handleCategoryNotFound(PlanNotFound exception) {
         log.error(exception.getMessage(), exception);
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception));
     }

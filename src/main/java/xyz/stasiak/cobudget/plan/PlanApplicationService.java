@@ -51,7 +51,7 @@ class PlanApplicationService {
         return planRepository.readPlanByUserIdAndYearAndMonth(
                         userId.id(), yearAndMonth.getYear(), yearAndMonth.getMonthValue()
                 )
-                .getOrElseThrow(() -> new PlanNotFound(userId, yearAndMonth));
+                .getOrElseThrow(() -> new PlanNotFound(yearAndMonth));
     }
 
     Plan deletePlannedCategory(UserId userId, Long planId, Integer categoryId) {
