@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   datasource:
@@ -11,6 +11,7 @@ spring:
 logging:
   level:
     org.springframework.jdbc.core: TRACE
+
 management:
   endpoints:
     web:
@@ -19,7 +20,7 @@ management:
 
 security:
   cors:
-    origins: "http://localhost:8080"
+    origins: "http://localhost:3000"
 okta:
   oauth2:
     issuer: "https://dev-01647397.okta.com/oauth2/default"
