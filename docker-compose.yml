@@ -12,9 +12,9 @@ services:
       JDBC_DATABASE_URL: "jdbc:postgresql://db:5432/postgres"
       JDBC_DATABASE_USERNAME: "postgres"
       JDBC_DATABASE_PASSWORD: "password"
-      CORS_ORIGINS: "http://localhost:8080"
+      CORS_ORIGINS: "http://localhost:3000"
     ports:
-      - "8081:8080"
+      - "8080:8080"
     networks:
       - cobudget-backend-network
   db:
