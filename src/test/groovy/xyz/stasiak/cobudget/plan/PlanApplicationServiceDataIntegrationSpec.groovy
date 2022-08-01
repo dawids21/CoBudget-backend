@@ -63,9 +63,15 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         planReadModel.date().getYear() == 2022
         planReadModel.date().month == Month.JULY
         planReadModel.plannedCategories().size() == 1
-        with(planReadModel.plannedCategories().get(0)) {
-            subcategoryName() == "Home"
-            amount() == 300
+        with(planReadModel.plannedCategories().get()) {
+            id() == 1
+            name() == "Food"
+            plannedSubcategories().size() == 1
+            with(plannedSubcategories().get()) {
+                id() == 2
+                name() == "Home"
+                amount() == 300
+            }
         }
     }
 
