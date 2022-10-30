@@ -75,12 +75,15 @@ class PlanApplicationServiceDataIntegrationSpec extends DataIntegrationSpec {
         }
     }
 
-    def "should throw an exception when read model not found"() {
+    def "should return empty plan when plan not exists"() {
         when:
-        planApplicationService.readPlan(USER_ID, LocalDate.of(2022, Month.JULY, 5))
+        def planReadModel = planApplicationService.readPlan(USER_ID, LocalDate.of(2022, Month.JULY, 5))
 
         then:
-        thrown(PlanNotFound)
+        planReadModel.id() == null
+        planReadModel.date().getYear() == 2022
+        planReadModel.date().month == Month.JULY
+        planReadModel.plannedCategories().size() == 0
     }
 
     private aPlan() {
