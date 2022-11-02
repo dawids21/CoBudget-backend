@@ -3,8 +3,6 @@
     "name": "Build Image"
     "runs-on": "ubuntu-latest"
     "steps":
-    - "name": "Check out code"
-      "uses": "actions/checkout@v2"
     - "name": "Configure AWS credentials"
       "uses": "aws-actions/configure-aws-credentials@v1"
       "with":
@@ -14,6 +12,16 @@
     - "id": "login-ecr"
       "name": "Login to Amazon ECR"
       "uses": "aws-actions/amazon-ecr-login@v1"
+    - "name": "Check out code"
+      "uses": "actions/checkout@v2"
+    - "env":
+        "IMAGE_NAME": "${ steps.login-ecr.outputs.registry }/cobudget-backend"
+      "name": "Configure Java"
+      "run": "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME"
+      "uses": "actions/setup-java@v3"
+      "with":
+        "distribution": "adopt"
+        "java-version": 17
     - "env":
         "ECR_REGISTRY": "${ steps.login-ecr.outputs.registry }"
         "ECR_REPOSITORY": "cobudget-backend"
