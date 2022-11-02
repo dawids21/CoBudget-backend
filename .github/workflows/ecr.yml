@@ -14,22 +14,21 @@
       "uses": "aws-actions/amazon-ecr-login@v1"
     - "name": "Check out code"
       "uses": "actions/checkout@v2"
-    - "env":
-        "IMAGE_NAME": "${ steps.login-ecr.outputs.registry }/cobudget-backend"
-      "name": "Configure Java"
-      "run": "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME"
+    - "name": "Configure Java"
       "uses": "actions/setup-java@v3"
       "with":
         "distribution": "adopt"
         "java-version": 17
     - "env":
+        "IMAGE_NAME": "${ steps.login-ecr.outputs.registry }/cobudget-backend"
+      "name": "Build image"
+      "run": "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME"
+    - "env":
         "ECR_REGISTRY": "${ steps.login-ecr.outputs.registry }"
         "ECR_REPOSITORY": "cobudget-backend"
         "IMAGE_TAG": "latest"
-      "name": "Build, tag, and push image to Amazon ECR"
-      "run": |2
-                    docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-                    docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      "name": "Push image to Amazon ECR"
+      "run": "docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 "name": "Deploy to ECR"
 "on":
   "push":
