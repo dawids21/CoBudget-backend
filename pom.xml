@@ -151,6 +151,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <env>
+                            <BPE_DELIM_JAVA_TOOL_OPTIONS xml:space="preserve"> </BPE_DELIM_JAVA_TOOL_OPTIONS>
+                            <!--                            <BPE_APPEND_JAVA_TOOL_OPTIONS>-->
+                            <!--                                -Xms150m-->
+                            <!--                            </BPE_APPEND_JAVA_TOOL_OPTIONS>-->
+                            <!--                            <BPE_APPEND_JAVA_TOOL_OPTIONS>-->
+                            <!--                                -Xmx150m-->
+                            <!--                            </BPE_APPEND_JAVA_TOOL_OPTIONS>-->
+                        </env>
+                    </image>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
