@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.6</version>
+        <version>3.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>xyz.stasiak</groupId>
@@ -25,7 +25,6 @@
         <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
         <maven.versions.plugin.version>2.13.0</maven.versions.plugin.version>
         <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
-        <spring-security.version>5.8.0</spring-security.version>
     </properties>
 
     <dependencyManagement>
