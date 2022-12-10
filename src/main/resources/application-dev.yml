@@ -7,6 +7,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: password
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "https://dev-01647397.okta.com/oauth2/default"
 
 logging:
   level:
@@ -21,6 +26,3 @@ management:
 security:
   cors:
     origins: "http://localhost:3000"
-okta:
-  oauth2:
-    issuer: "https://dev-01647397.okta.com/oauth2/default"
