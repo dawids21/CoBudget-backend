@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.context.ContextConfiguration
 import spock.mock.DetachedMockFactory
 import xyz.stasiak.cobudget.WebIntegrationSpec
 
@@ -16,6 +17,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @WebMvcTest(EntryController)
 @Import(WebIntegrationMockConfig)
+// https://github.com/spockframework/spock/issues/1539
+@ContextConfiguration
 class EntryControllerIntegrationSpec extends WebIntegrationSpec {
 
     @Autowired

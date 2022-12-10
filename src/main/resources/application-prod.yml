@@ -1,16 +1,17 @@
 server:
   port: ${APP_PORT}
 
-okta:
-  oauth2:
-    issuer: ${OAUTH_ISSUER}
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH_ISSUER}
 
 security:
   cors:
