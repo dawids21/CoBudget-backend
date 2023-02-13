@@ -1,38 +1,30 @@
 package xyz.stasiak.cobudget.receipt;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
-import java.io.IOException;
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/receipt")
 @RequiredArgsConstructor
+@Slf4j
 class ReceiptController {
-    private final ReceiptConfigurationProperties receiptConfigurationProperties;
+    private final ReceiptService receiptService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam MultipartFile receiptFile) {
-
-        try (S3Client s3Client = S3Client.create()) {
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(receiptConfigurationProperties.bucket())
-                    .key(String.format("receipt-%d", Instant.now().toEpochMilli()))
-                    .build();
-            s3Client.putObject(putObjectRequest,
-                    RequestBody.fromInputStream(receiptFile.getInputStream(), receiptFile.getSize()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public ResponseEntity<Void> uploadFile(@RequestParam MultipartFile receiptFile) {
+        try {
+            receiptService.uploadFile(receiptFile);
+            return ResponseEntity.ok().build();
+        } catch (ReceiptException e) {
+            log.error("Problem with uploading receipt file", e);
+            throw e;
         }
-
     }
 }
