@@ -1,5 +1,6 @@
 package xyz.stasiak.cobudget.receipt;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +16,16 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/receipt")
+@RequiredArgsConstructor
 class ReceiptController {
-    private static final String BUCKET = "cobudget-eu-central-1-receipts";
+    private final ReceiptConfigurationProperties receiptConfigurationProperties;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadFile(@RequestParam MultipartFile receiptFile) {
 
         try (S3Client s3Client = S3Client.create()) {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .bucket(BUCKET)
+                    .bucket(receiptConfigurationProperties.bucket())
                     .key(String.format("receipt-%d", Instant.now().toEpochMilli()))
                     .build();
             s3Client.putObject(putObjectRequest,

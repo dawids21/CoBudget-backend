@@ -16,3 +16,7 @@ spring:
 security:
   cors:
     origins: ""
+
+cobudget:
+  receipts:
+    bucket: test

@@ -26,3 +26,7 @@ management:
 security:
   cors:
     origins: "http://localhost:3000"
+
+cobudget:
+  receipts:
+    bucket: cobudget-eu-central-1-receipts
