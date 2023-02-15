@@ -30,3 +30,8 @@ security:
 cobudget:
   receipts:
     bucket: cobudget-eu-central-1-receipts
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: 0oa24pfnd1D6oI3Ak5d7

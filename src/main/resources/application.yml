@@ -1,3 +1,10 @@
 spring:
   profiles:
     active: prod
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      scopes: openid

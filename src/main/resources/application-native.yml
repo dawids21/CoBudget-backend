@@ -20,3 +20,8 @@ security:
 cobudget:
   receipts:
     bucket: test
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ""
