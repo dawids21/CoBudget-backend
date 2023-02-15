@@ -16,3 +16,12 @@ spring:
 security:
   cors:
     origins: ""
+
+cobudget:
+  receipts:
+    bucket: test
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ""

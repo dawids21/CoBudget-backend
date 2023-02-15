@@ -16,3 +16,12 @@ spring:
 security:
   cors:
     origins: ${CORS_ORIGINS}
+
+cobudget:
+  receipts:
+    bucket: cobudget-eu-central-1-receipts
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ${OAUTH_CLIENT_ID}

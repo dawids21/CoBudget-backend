@@ -24,6 +24,7 @@
         <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
         <maven.versions.plugin.version>2.13.0</maven.versions.plugin.version>
         <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
+        <aws.sdk.version>2.20.2</aws.sdk.version>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,13 @@
                 <version>0.3.0</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -134,6 +142,15 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr-jackson</artifactId>
             <version>${vavr.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.spockframework</groupId>
