@@ -2,13 +2,13 @@ package xyz.stasiak.cobudget.receipt;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.stasiak.cobudget.receipt.exception.CantUploadReceipt;
 
 @RestController
 @RequestMapping("/receipt")
@@ -19,12 +19,15 @@ class ReceiptController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> uploadFile(@RequestParam MultipartFile receiptFile) {
-        try {
-            receiptService.uploadFile(receiptFile);
-            return ResponseEntity.ok().build();
-        } catch (ReceiptException e) {
-            log.error("Problem with uploading receipt file", e);
-            throw e;
-        }
+        receiptService.uploadFile(receiptFile);
+        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(CantUploadReceipt.class)
+    ProblemDetail cantUploadReceiptHandler(CantUploadReceipt exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage());
+        problemDetail.setTitle("Problem with receipt upload");
+        return problemDetail;
     }
 }
