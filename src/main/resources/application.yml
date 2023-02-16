@@ -8,5 +8,3 @@ springdoc:
     oauth:
       use-pkce-with-authorization-code-grant: true
       scopes: openid
-server:
-  forward-headers-strategy: framework
