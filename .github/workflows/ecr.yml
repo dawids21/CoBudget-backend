@@ -29,8 +29,7 @@
     - "env":
         "IMAGE_NAME": "${{ steps.login-ecr.outputs.registry }}/cobudget-backend"
       "name": "Build image"
-      "run": "SPRING_PROFILES_ACTIVE=native ./mvnw -Pnative spring-boot:build-image
-        -Dspring-boot.build-image.imageName=$IMAGE_NAME"
+      "run": "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME"
     - "env":
         "ECR_REGISTRY": "${{ steps.login-ecr.outputs.registry }}"
         "ECR_REPOSITORY": "cobudget-backend"
