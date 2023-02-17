@@ -3,6 +3,7 @@ package xyz.stasiak.cobudget.receipt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -25,7 +26,7 @@ class ReceiptService {
             s3Client.putObject(putObjectRequest,
                     RequestBody.fromInputStream(receiptFile.getInputStream(), receiptFile.getSize()));
             log.info("Uploaded receipt");
-        } catch (IOException e) {
+        } catch (IOException | SdkException e) {
             log.error("Problem with uploading receipt file", e);
             throw new CantUploadReceipt(e);
         }
