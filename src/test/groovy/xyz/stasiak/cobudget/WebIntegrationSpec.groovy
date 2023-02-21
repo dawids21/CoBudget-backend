@@ -17,7 +17,7 @@ abstract class WebIntegrationSpec extends Specification {
     protected MockMvc mvc
 
     protected static def getJwt(String userId) {
-        SecurityMockMvcRequestPostProcessors.jwt().jwt(token -> token.claim("uid", userId))
+        SecurityMockMvcRequestPostProcessors.jwt().jwt(token -> token.claim("sub", userId))
     }
 
     @TestConfiguration
