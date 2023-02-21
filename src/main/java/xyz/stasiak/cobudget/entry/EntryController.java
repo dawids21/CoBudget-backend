@@ -2,11 +2,10 @@ package xyz.stasiak.cobudget.entry;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import xyz.stasiak.cobudget.common.UserId;
-import xyz.stasiak.cobudget.common.UserIdNotFound;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/entry")
@@ -17,9 +16,9 @@ class EntryController {
     private final EntryRepository entryRepository;
 
     @PostMapping
-    ResponseEntity<Entry> addEntry(@RequestBody EntryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
+    ResponseEntity<Entry> addEntry(@RequestBody EntryWriteModel dto, Principal principal) {
 
-        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+        var userId = new UserId(principal.getName());
 
         var entry = Entry.of(dto, userId.id());
 

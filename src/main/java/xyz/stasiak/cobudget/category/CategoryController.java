@@ -3,14 +3,13 @@ package xyz.stasiak.cobudget.category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import xyz.stasiak.cobudget.category.exception.CategoryIdNotFound;
 import xyz.stasiak.cobudget.category.exception.MainCategoryNotFound;
 import xyz.stasiak.cobudget.common.ErrorMessage;
 import xyz.stasiak.cobudget.common.UserId;
-import xyz.stasiak.cobudget.common.UserIdNotFound;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/category")
@@ -22,8 +21,8 @@ class CategoryController {
     private final CategoryApplicationService categoryApplicationService;
 
     @PostMapping
-    ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, @AuthenticationPrincipal Jwt jwt) {
-        var userId = UserId.get(jwt).getOrElseThrow(() -> new UserIdNotFound(jwt.getSubject()));
+    ResponseEntity<Category> addCategory(@RequestBody CategoryWriteModel dto, Principal principal) {
+        var userId = new UserId(principal.getName());
         var category = Category.of(dto, userId.id());
         return ResponseEntity.ok(categoryApplicationService.add(category));
     }
