@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationPropertiesScan(basePackageClasses = ReceiptConfigurationProperties.class)
 class ReceiptConfig {
     @Bean
-    ReceiptService receiptService(ReceiptConfigurationProperties receiptConfigurationProperties) {
-        return new ReceiptService(receiptConfigurationProperties);
+    ReceiptService receiptService(ReceiptConfigurationProperties receiptConfigurationProperties,
+                                  ReceiptImageRepository receiptImageRepository) {
+        return new ReceiptService(receiptConfigurationProperties, receiptImageRepository);
     }
 }
