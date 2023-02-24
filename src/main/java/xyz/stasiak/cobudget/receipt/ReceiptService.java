@@ -2,6 +2,7 @@ package xyz.stasiak.cobudget.receipt;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -19,6 +20,7 @@ import java.time.ZoneOffset;
 
 @RequiredArgsConstructor
 @Slf4j
+@PreAuthorize("@featureToggleService.isFeatureEnabled('receipts-scanning')")
 class ReceiptService {
     private final ReceiptConfigurationProperties receiptConfigurationProperties;
     private final ReceiptImageRepository receiptImageRepository;

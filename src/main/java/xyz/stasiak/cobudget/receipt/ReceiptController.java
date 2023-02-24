@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.stasiak.cobudget.common.UserId;
+import xyz.stasiak.cobudget.featuretoggle.FeatureToggleService;
 import xyz.stasiak.cobudget.receipt.exception.CantUploadReceipt;
 
 import java.security.Principal;
@@ -19,12 +20,23 @@ import java.security.Principal;
 @Slf4j
 class ReceiptController {
     private final ReceiptService receiptService;
+    private final FeatureToggleService featureToggleService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReceiptImage> uploadFile(@RequestParam MultipartFile receiptFile, Principal principal) {
         UserId userId = new UserId(principal.getName());
         ReceiptImage receiptImage = receiptService.saveReceiptImage(receiptFile, userId);
         return ResponseEntity.ok(receiptImage);
+    }
+
+    @PostMapping("/enable")
+    public void enableFeature() {
+        featureToggleService.enableFeature("receipts-scanning");
+    }
+
+    @PostMapping("/disable")
+    public void disableFeature() {
+        featureToggleService.disableFeature("receipts-scanning");
     }
 
     @ExceptionHandler(CantUploadReceipt.class)
