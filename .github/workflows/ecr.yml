@@ -36,6 +36,12 @@
         "IMAGE_TAG": "latest"
       "name": "Push image to Amazon ECR"
       "run": "docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    - "env":
+        "ECS_CLUSTER": "my-cluster"
+        "ECS_SERVICE": "cobudget"
+      "name": "Deploy new container on ECS"
+      "run": "aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE
+        --force-new-deployment"
 "name": "Deploy to ECR"
 "on":
   "push":
