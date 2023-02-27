@@ -11,7 +11,6 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/api/category")
 @RestController
-@CrossOrigin(origins = "${security.cors.origins}")
 class CategoryQueryController {
 
     private final CategoryQueryService queryService;

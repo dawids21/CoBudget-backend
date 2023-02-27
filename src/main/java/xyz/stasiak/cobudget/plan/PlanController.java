@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/plan")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${security.cors.origins}")
 @Slf4j
 class PlanController {
 

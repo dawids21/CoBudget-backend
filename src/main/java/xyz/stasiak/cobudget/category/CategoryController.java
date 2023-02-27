@@ -14,7 +14,6 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @RequestMapping("/api/category")
 @RestController
-@CrossOrigin(origins = "${security.cors.origins}")
 @Slf4j
 class CategoryController {
 
