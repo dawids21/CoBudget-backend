@@ -19,6 +19,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Slf4j
 class ReceiptController {
+    private static final String FEATURE_NAME = "receipts-scanning";
     private final ReceiptService receiptService;
     private final FeatureToggleService featureToggleService;
 
@@ -29,14 +30,20 @@ class ReceiptController {
         return ResponseEntity.ok(receiptImage);
     }
 
+    @GetMapping("/is-enabled")
+    public IsEnabledResponse isFeatureEnabled() {
+        boolean featureEnabled = featureToggleService.isFeatureEnabled(FEATURE_NAME);
+        return new IsEnabledResponse(featureEnabled);
+    }
+
     @PostMapping("/enable")
     public void enableFeature() {
-        featureToggleService.enableFeature("receipts-scanning");
+        featureToggleService.enableFeature(FEATURE_NAME);
     }
 
     @PostMapping("/disable")
     public void disableFeature() {
-        featureToggleService.disableFeature("receipts-scanning");
+        featureToggleService.disableFeature(FEATURE_NAME);
     }
 
     @ExceptionHandler(CantUploadReceipt.class)
@@ -45,5 +52,8 @@ class ReceiptController {
                 exception.getMessage());
         problemDetail.setTitle("Problem with receipt upload");
         return problemDetail;
+    }
+
+    private record IsEnabledResponse(boolean enabled) {
     }
 }
