@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.stasiak.cobudget.common.UserId;
@@ -31,8 +32,8 @@ class ReceiptController {
     }
 
     @GetMapping("/is-enabled")
-    public IsEnabledResponse isFeatureEnabled() {
-        boolean featureEnabled = featureToggleService.isFeatureEnabled(FEATURE_NAME);
+    public IsEnabledResponse isFeatureEnabled(Authentication authentication) {
+        boolean featureEnabled = featureToggleService.isFeatureEnabled(FEATURE_NAME, authentication);
         return new IsEnabledResponse(featureEnabled);
     }
 

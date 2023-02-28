@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.config.security;
+package xyz.stasiak.cobudget.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,5 +46,10 @@ class WebSecurityConfig {
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         corsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return corsConfigurationSource;
+    }
+
+    @Bean
+    SecurityService securityService() {
+        return new SecurityService();
     }
 }

@@ -20,7 +20,7 @@ import java.time.ZoneOffset;
 
 @RequiredArgsConstructor
 @Slf4j
-@PreAuthorize("@featureToggleService.isFeatureEnabled('receipts-scanning')")
+@PreAuthorize("@featureToggleService.isFeatureEnabled('receipts-scanning', authentication)")
 class ReceiptService {
     private final ReceiptConfigurationProperties receiptConfigurationProperties;
     private final ReceiptImageRepository receiptImageRepository;
