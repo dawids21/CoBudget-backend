@@ -1,4 +1,4 @@
-package xyz.stasiak.cobudget.config.security;
+package xyz.stasiak.cobudget.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -13,7 +13,11 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    static final String ROLE_PREFIX = "ROLE_";
+    private static final String ROLES_CLAIM = "roles";
+    private static final String GROUPS_PREFIX = "CoBudget-";
     private final JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+
     @Override
     public AbstractAuthenticationToken convert(@SuppressWarnings("NullableProblems") Jwt source) {
         AbstractAuthenticationToken token = jwtAuthenticationConverter.convert(source);
@@ -23,9 +27,9 @@ class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthent
     }
 
     private Collection<GrantedAuthority> getAuthoritiesFromRoles(Jwt source) {
-        return source.getClaimAsStringList("roles")
+        return source.getClaimAsStringList(ROLES_CLAIM)
                 .stream()
-                .map(group -> group.replace("CoBudget-", "ROLE_"))
+                .map(group -> group.replace(GROUPS_PREFIX, ROLE_PREFIX))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toUnmodifiableSet());
     }
