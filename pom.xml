@@ -160,6 +160,11 @@
             <version>1.17.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.veryfi</groupId>
+            <artifactId>veryfi-java</artifactId>
+            <version>1.0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
