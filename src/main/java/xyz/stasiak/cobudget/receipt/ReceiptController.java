@@ -25,10 +25,12 @@ class ReceiptController {
     private final FeatureToggleService featureToggleService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ReceiptImage> uploadFile(@RequestParam MultipartFile receiptFile, Principal principal) {
+    public ResponseEntity<Receipt> uploadFile(@RequestParam MultipartFile receiptFile, Principal principal) {
         UserId userId = new UserId(principal.getName());
         ReceiptImage receiptImage = receiptService.saveReceiptImage(receiptFile, userId);
-        return ResponseEntity.ok(receiptImage);
+        String json = receiptService.getDataFromReceipt(receiptImage.key());
+        Receipt receipt = receiptService.mapJsonToReceipt(json);
+        return ResponseEntity.ok(receipt);
     }
 
     @GetMapping("/is-enabled")
