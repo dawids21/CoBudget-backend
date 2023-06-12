@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,15 @@ class ReceiptService {
     private final ReceiptConfigurationProperties receiptConfigurationProperties;
     private final ReceiptImageRepository receiptImageRepository;
 
+    @Value("${clientId}")
+    private String clientId ;
+    @Value("${clientSecret}")
+    private String clientSecret;
+    @Value("${username}")
+    private String username;
+    @Value("${apiKey}")
+    private String apiKey;
+
     @Transactional
     public ReceiptImage saveReceiptImage(MultipartFile receiptFile, UserId userId) {
         ReceiptImage receiptImage = uploadFile(receiptFile, userId);
@@ -40,10 +50,6 @@ class ReceiptService {
     }
 
     public String getDataFromReceipt(String fileUrl) {
-        String clientId = "vrf3664EB3MwfLzcGCvnvbYG9gB74CAT0Wn01zR";
-        String clientSecret = "NRFR8P2ANhudXmarUKcTHVr1BvsdXdR737wU7hLGVmICXZw3iP4HCSmDkLeAXPuvKeCN3oHbG1hsPCoop5SBHVTIcxmWS1r2aF6797cYtB47aUeK9Jn2ir3OHxcPZhLJ";
-        String username = "milosz.mat";
-        String apiKey = "f205f4092f09b5e5ec19a946d6b73854";
         Client client = VeryfiClientFactory.createClient(clientId, clientSecret, username, apiKey);
         return client.processDocumentUrl(fileUrl, Collections.emptyList(), Collections.emptyList(), false, 10, false, null, null);
     }

@@ -1,0 +1,7 @@
+java.runtime.version=17
+
+#verify credentials
+clientId = ""
+clientSecret = "";
+username = "";
+apiKey = "";
