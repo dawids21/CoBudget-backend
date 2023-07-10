@@ -1,0 +1,38 @@
+"concurrency":
+  "cancel-in-progress": true
+  "group": "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref
+    }}"
+"jobs":
+  "build":
+    "env":
+      "IMAGE_NAME": "cobudget"
+      "REGISTRY": "registry.vm.stasiak.xyz"
+    "name": "Build Image"
+    "permissions":
+      "contents": "read"
+      "id-token": "write"
+    "runs-on": "ubuntu-latest"
+    "steps":
+    - "name": "Login to private registry"
+      "uses": "docker/login-action@v2"
+      "with":
+        "password": "${{ secrets.REGISTRY_PASSWORD }}"
+        "registry": "${{ env.REGISTRY }}"
+        "username": "${{ secrets.REGISTRY_USERNAME }}"
+    - "name": "Check out code"
+      "uses": "actions/checkout@v2"
+    - "name": "Configure Java"
+      "uses": "actions/setup-java@v3"
+      "with":
+        "cache": "maven"
+        "distribution": "adopt"
+        "java-version": 17
+    - "name": "Build image"
+      "run": "./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$REGISTRY/$IMAGE_NAME"
+    - "name": "Push image"
+      "run": "docker push $REGISTRY/$IMAGE_NAME"
+"name": "Build and publish image"
+"on":
+  "push":
+    "branches":
+    - "main"
